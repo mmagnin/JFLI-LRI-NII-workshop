@@ -1,0 +1,188 @@
+% Inférence de la Paramétrisation
+
+\begin{frame}
+  \frametitle{Inferring Parameters}
+  \framesubtitle{\cite{Folschette2012}}
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+
+\only<1-5>{
+\begin{center}
+\scalebox{0.5}{
+\begin{tikzpicture}
+\path[use as bounding box] (-0.5,-0.8) rectangle (6.5,2.8);
+\exphinf
+
+% Processus mis en valeur
+\only<2->{
+  \node[current process,fill=colorb] (hb_1) at (b_1.center) {};
+  \node[current process,fill=colorb] (ha_1) at (a_1.center) {};}
+\only<2->{
+  \node[current process,fill=colorb] (hab_3) at (ab_3.center) {};}
+\only<3->{
+  \node[current process,fill=colorb] (hz_1) at (z_1.center) {};}
+
+% Actions mises en valeur
+\only<3->{
+  \THit{ab_3}{}{z_2}{.west}{z_1}
+  \THit{ab_3}{}{z_0}{.west}{z_1}
+  \path[bounce,bend left] \TBounce{z_2}{bend right}{z_1}{.north} \TBounce{z_0}{}{z_1}{.south};}
+\end{tikzpicture}
+}
+\end{center}
+}
+
+%\only<4->{
+%\begin{center}
+%\scalebox{0.5}{
+%\begin{tikzpicture}
+%\path[use as bounding box] (-0.5,-0.8) rectangle (6.5,2.8);
+%\exphinfprojssc
+%
+%% Processus mis en valeur
+%\only<2->{
+%  \node[current process,fill=colorb] (hb_1) at (b_1.center) {};
+%  \node[current process,fill=colorb] (ha_1) at (a_1.center) {};}
+%
+%% Actions mises en valeur
+%\only<2->{
+%  \THit{a_1}{}{z_0}{.west}{z_1}
+%  \THit{a_1}{}{z_1}{.north west}{z_2}
+%  \THit{b_1}{}{z_1}{.south west}{z_0}
+%  \THit{b_1}{}{z_2}{.west}{z_1}
+%  \path[bounce,bend left] \TBounce{z_0}{}{z_1}{.south} \TBounce{z_1}{}{z_2}{.south}
+%    \TBounce{z_1}{bend right}{z_0}{.north} \TBounce{z_2}{bend right}{z_1}{.north} ;}
+%}
+%\end{tikzpicture}
+%\end{center}
+%}
+
+\end{column}
+\begin{column}{0.2\textwidth}
+
+\begin{center}
+\begin{tikzpicture}[grn]
+\path[use as bounding box] (0.5,-0.5) rectangle (2,1.5);
+% Gènes noirs
+  \node[inner sep=0] (a) at (0,1.5) {a};
+  \node[inner sep=0] (b) at (0,0) {b};
+  \node[inner sep=0] (z) at (2,0.75) {z};
+% Arcs colorés
+  \path (a) edge[act] node[elabel,above=-2pt] {$1+$} (z) ;
+  \path (b) edge[inh] node[elabel,below=-2pt] {$1-$} (z) ;
+\end{tikzpicture}
+\end{center}
+
+\end{column}
+\begin{column}{0.25\textwidth}
+
+\only<1-5>{
+\begin{tabular}{c|c|c}
+%  $\omega$ & $k_{z, \omega}$ \\
+%\hline
+  \multicolumn{2}{c|}{$\omega$} & \multirow{2}{*}{$k_{z, \omega}$} \\
+\cline{1-2}
+  $a$ & $b$ & \\
+\hline
+  \only<2->{\color{colorgray}}$-$ & \only<2->{\color{colorgray}}$+$ & \\
+  \only<2->{\color{colorgray}}$-$ & \only<2->{\color{colorgray}}$-$ & \\
+  \only<2->{\color{colorgray}}$+$ & \only<2->{\color{colorgray}}$+$ & \\
+  \only<1>{$+$}\only<2->{\redex{$+$}} & \only<1>{$-$}\only<2->{\redex{$-$}} & \uncover<4->{\redex{$1$}}
+\end{tabular}
+}
+
+\end{column}
+\end{columns}
+
+\bigskip
+\pause[2]
+\begin{enumerate}[1.]
+  \item For each configuration of resources \quad [\ex{$\omega = \{a^+, b^-\}$}]\\
+\pause
+        find the \tval{focal processes}.\pause[4] If possible, conclude. \quad [$\ex{k_{z,\{a^+, b^-\}} = 1}$]
+\pause[5]
+ \item[] Inconclusive cases:
+  \begin{itemize}
+    \item[--] Behavior cannot be represented as a BRN
+    \item[--] Lack of cooperation (no focal processes)
+  \end{itemize}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Inferring Parameters}
+%  \framesubtitle{\tcite{PMR10-TCSB}}
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+
+\begin{center}
+\scalebox{0.5}{
+\begin{tikzpicture}
+\path[use as bounding box] (-0.5,-0.8) rectangle (6.5,2.8);
+\exphinfprojssc
+
+% Processus mis en valeur
+  \node[current process,fill=colorb] (hb_1) at (b_1.center) {};
+  \node[current process,fill=colorb] (ha_1) at (a_1.center) {};
+%
+%% Actions mises en valeur
+  \THit{a_1}{}{z_0}{.west}{z_1}
+  \THit{a_1}{}{z_1}{.north west}{z_2}
+  \THit{b_1}{}{z_1}{.south west}{z_0}
+  \THit{b_1}{}{z_2}{.west}{z_1}
+  \path[bounce,bend left] \TBounce{z_0}{}{z_1}{.south} \TBounce{z_1}{}{z_2}{.south}
+    \TBounce{z_1}{bend right}{z_0}{.north} \TBounce{z_2}{bend right}{z_1}{.north} ;
+\end{tikzpicture}
+}
+\end{center}
+%
+\end{column}
+\begin{column}{0.2\textwidth}
+%
+\begin{center}
+\begin{tikzpicture}[grn]
+\path[use as bounding box] (0.5,-0.5) rectangle (2,1.5);
+% Gènes noirs
+  \node[inner sep=0] (a) at (0,1.5) {a};
+  \node[inner sep=0] (b) at (0,0) {b};
+  \node[inner sep=0] (z) at (2,0.75) {z};
+% Arcs colorés
+  \path (a) edge[act] node[elabel,above=-2pt] {$1+$} (z) ;
+  \path (b) edge[inh] node[elabel,below=-2pt] {$1-$} (z) ;
+\end{tikzpicture}
+\end{center}
+
+\end{column}
+\begin{column}{0.25\textwidth}
+
+\begin{tabular}{c|c|c}
+%  $\omega$ & $k_{z, \omega}$ \\
+%\hline
+  \multicolumn{2}{c|}{$\omega$} & \multirow{2}{*}{$k_{z, \omega}$} \\
+\cline{1-2}
+  $a$ & $b$ & \\
+\hline
+  $-$ & $+$ & \redex{\textit{?}} \\ %\textcolor{lightgray}{\textit{?}} \\
+  $-$ & $-$ & $0$ \\
+  $+$ & $+$ & $2$ \\
+  $+$ & $-$ & \redex{\textit{?}} %\textcolor{lightgray}{\textit{?}}
+\end{tabular}
+%
+\end{column}
+\end{columns}
+
+\bigskip
+\begin{enumerate}[1.]
+  \item For each configuration of resources \quad [\ex{$\omega = \{a^+, b^-\}$}]\\
+        find the \tval{focal processes}. If possible, conclude. \quad [$\ex{k_{z,\{a^+, b^-\}} = 1}$]
+ \item[] Inconclusive cases:
+  \begin{itemize}
+    \item[--] Behavior cannot be represented as a BRN
+    \item[--] Lack of cooperation (no focal processes)
+  \end{itemize}
+\medskip
+  \item If some parameters could not be inferred, enumerate all admissible parametrizations, regarding \textbf{biological constraints} and \textbf{the dynamics of the Process Hitting} $\Rightarrow$ $k_{z, \{a^+, b^-\}} \in \{0 ; 1 ; 2\}$; $k_{z, \{a^-, b^+\}} \in \{0 ; 1 ; 2\}$
+\end{enumerate}
+\end{frame}

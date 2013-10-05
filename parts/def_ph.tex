@@ -1,0 +1,917 @@
+% Exemples
+
+% Exemple des définitions + points fixes
+\def \exdef {
+\TSort{(0,0)}{z}{3}{l}
+\TSort{(3,3)}{b}{2}{t}
+\TSort{(6,0)}{a}{2}{r}
+
+\THit{b_0}{}{z_1}{.east}{z_2}
+\THit{b_1}{}{z_0}{.east}{z_2}
+\THit{a_0}{}{b_1}{.south}{b_0}
+\THit{a_1}{out=60,in=0,selfhit}{a_1}{.east}{a_0}
+
+\path[bounce,bend right]
+\TBounce{z_1}{}{z_2}{.south}
+\TBounce{z_0}{bend right=50}{z_2}{.south east}
+;
+\path[bounce,bend left]
+\TBounce{a_1}{}{a_0}{.north}
+\TBounce{b_1}{}{b_0}{.south}
+;
+}
+
+% Idem réorganisé pour Points Fixes
+\def \exdefb {
+\path[use as bounding box] (0,-1) rectangle (4,4);
+
+\TSort{(0,0)}{z}{3}{l}
+\TSort{(2,4)}{b}{2}{t}
+\TSort{(4,1)}{a}{2}{r}
+}
+
+% Frappes
+\def \exdefbfrappes {
+\THit{b_0}{}{z_1}{.east}{z_2}
+\THit{b_1}{}{z_0}{.east}{z_2}
+\THit{a_0}{}{b_1}{.south}{b_0}
+\THit{a_1}{out=60,in=0,selfhit}{a_1}{.east}{a_0}
+
+\path[bounce,bend right]
+\TBounce{z_1}{}{z_2}{.south}
+\TBounce{z_0}{bend right=50}{z_2}{.south east}
+;
+\path[bounce,bend left]
+\TBounce{a_1}{}{a_0}{.north}
+\TBounce{b_1}{}{b_0}{.south}
+;
+}
+
+% Non-frappes
+\def \exdefbsf {
+\path[use as bounding box] (0,-1) rectangle (4,4);
+\node[process,draw=red,thick] (a_1) at (a_1.center) {};
+
+\path<2,4-> (z_0) edge (b_0) edge (a_0) (b_0) edge (a_0);
+\path<2-3> (z_2) edge (b_0) edge (a_0);
+\path<3>[very thick] (z_0) edge (b_0) edge (a_0) (b_0) edge (a_0);
+\path<4->[very thick] (z_2) edge (b_0) edge (a_0) (b_0) edge (a_0);
+\TState{3}{z_0,b_0,a_0}
+\TState{4-}{z_2,b_0,a_0}
+
+\path (z_2) edge (b_1);
+\path (z_1) edge (b_1);
+\path (z_1) edge (a_0);
+}
+
+
+
+% Figure de présentation de l'analyse d'atteignabilité
+\def \figsa {
+\begin{tikzpicture}
+\path[use as bounding box] (-5,-2.6) rectangle (5,2.8);
+\definecolor{r2}{RGB}{238,10,38}
+
+\path<2->[shading=1, inner color=r2, outer color=white] (3.5,-2.8) -- (4.4,3.2) -- (0,3) -- (-4.5,1.4) -- (-2.5,-2.5) -- (0,-3.6) -- (2.8,-2.8);
+%\path<2->[shading, inner color=r2, outer color=white, border color=white] (2.8,-2.8) -- (4.5,4.5) -- (0,3.9) -- (-4.5,1.8) -- (-5,-3) -- (0,-3.2) -- (2.8,-2.8);
+\draw<2->[thick,fill=white] (2.5,-2.1) -- (3,2.5) -- (-2.7,1.3) -- (-2,-2) -- (2.5,-2.1);
+\draw<6->[thick,fill=lightyellow] (2.5,-2.1) -- (3,2.5) -- (-2.7,1.3) -- (-2,-2) -- (2.5,-2.1);
+
+\node<2->[text width=3.5cm, color=red] (s1) at (-5,2) {Over-Approximation};
+\path<2->[->,very thick,color=red] (s1.south) edge (-3.5,1.2);
+%\node<2->[text width=3cm,color=black] (i1) at (3.7,.2) {$\Rightarrow$};
+\node<2->[text width=3cm,color=black] (q) at (4.5,.2) {$\neg Q$};
+
+\draw<4->[thick, fill=green] (.5,-.8) -- (1,0) -- (.3,1) -- (-1,.5) -- (-.5,-.5) -- (.5,-.8);
+\node<4->[text width=3.5cm,color=darkgreen] (s2) at (5.2,-1.5) {Under-Approximation};
+\node<4->[text width=3cm,color=black] (p) at (1.8,.2) {$P$};
+%\node<4->[text width=3cm,color=black] (i1) at (2.25,.2) {$\Rightarrow$};
+
+% reaching set
+\node[text width=3cm,color=darkcyan] (s) at (1.8,1.7) {Exact solution};
+\node<1->[text width=3cm,color=darkcyan] (s0) at (0,0) {};
+\draw[color=darkcyan, thick] (0,0) ellipse (2 and 1.5);
+%\path<1>[draw=white] (2.8,-2.8) -- (4.5,4.5) -- (0,3.9) -- (-4.5,1.8) -- (-5,-3) -- (-2.5,-3.5) -- (0,-3.2) -- (2.8,-2.8);
+\node[text width=3cm,color=black] (r) at (2.8,.2) {$R$};
+
+\path<4->[->,very thick,color=darkgreen] (s2) edge (.6,-.4);
+
+\tikzstyle{point}=[circle,draw=blue,fill=blue,minimum size=5pt,inner sep=0pt]
+
+%\only<5->{
+\only<3->{
+\node[point] at (-2.4,-2) {};
+\node[point] at (-2,2) {};
+}
+\only<5->{
+\node[point] at (0,0) {};
+}
+\only<7->{
+\node[point] at (-.5,-1.1) {};
+\node[point] at (2.5,1) {};
+}
+%}
+
+\end{tikzpicture}
+}
+
+
+
+% Exemple atteignabilité
+\def \exatt {
+\path[use as bounding box] (-1,-3) rectangle (7,2);
+\TSort{(0,0)}{a}{2}{l}
+\TSort{(3,0)}{b}{3}{l}
+\TSort{(6,0)}{d}{3}{r}
+\TSort{(2,-2)}{c}{2}{b}
+
+\THit{a_0}{}{c_0}{.north}{c_1}
+\THit{a_1}{}{b_1}{.west}{b_0}
+\THit{c_1}{bend left=20pt}{b_0}{.west}{b_1}
+\THit{b_1.south west}{->}{a_0}{.east}{a_1}
+\THit{b_0}{}{d_0}{.west}{d_1}
+\THit{b_1}{}{d_1}{.west}{d_2}
+\THit{d_1}{}{b_0}{.north east}{b_2}
+\THit{c_1}{bend right=80pt,distance=80pt}{d_1}{.east}{d_0}
+\THit{b_2}{distance=120pt,out=30,in=40}{d_0}{.east}{d_2}
+
+\path[bounce,bend left]
+\TBounce{d_0}{}{d_1}{.south}
+\TBounce{d_1}{}{d_2}{.south}
+\TBounce{c_0}{}{c_1}{.west}
+\TBounce{b_0}{}{b_1}{.south}
+\TBounce{d_1}{}{d_0}{.north}
+;
+\path[bounce,bend right]
+\TBounce{a_0}{}{a_1}{.south}
+\TBounce{b_0}{}{b_2}{.south}
+\TBounce{b_1}{}{b_0}{.north}
+\TBounce{d_0}{bend right=50pt,distance=40pt}{d_2}{.south}
+;
+}
+
+
+
+% Structure abstraite / Sous-approximation / Ok
+\def \sauyes {%
+\begin{tikzpicture}[aS,node distance=1.1cm,shorthandon]
+\path[use as bounding box] (-0.5,-2.1) rectangle (10.25,2.2);
+
+\node[Aobj] (d02) {$\PHobjectif{d_0}{d_2}$};
+\node[Aproc,above of=d02] (d2) {$d_2$};
+
+\node[Asol,right of=d02] (d02s2) {};
+\node[Aproc,above right of=d02s2] (b0) {$b_0$};
+\node[Aobj,right of=b0] (b10) {$\PHobjectif{b_1}{b_0}$};
+\node[Asol,right of=b10] (b10s) {};
+\node[Aproc,right of=b10s] (a1) {$a_1$};
+\node[Aobj,right of=a1] (a11) {$\PHobjectif{a_1}{a_1}$};
+\node[Asol,right of=a11] (a11s) {};
+
+\node[Aobj,above of=b10,yshift=-0.5cm] (b00)
+{$\PHobjectif{b_0}{b_0}$};
+\node[Asol,right of=b00] (b00s) {};
+
+\node[Aproc, below of=b0] (b1) {$b_1$};
+\node[Aobj,right of=b1] (b11) {$\PHobjectif{b_1}{b_1}$};
+\node[Asol,right of=b11] (b11s) {};
+\node[Aobj,below of=b11] (b01) {$\PHobjectif{b_0}{b_1}$};
+\node[Asol,right of=b01] (b01s) {};
+\node[Aproc,right of=b01s] (c1) {$c_1$};
+\node[Aobj,right of=c1] (c11) {$\PHobjectif{c_1}{c_1}$};
+\node[Asol,right of=c11] (c11s) {};
+
+\path
+(d02) edge (d02s2) (d02s2) edge (b1) edge (b0)
+(a11) edge (a11s)
+(b10) edge (b10s) (b10s) edge (a1)
+(b11) edge (b11s)
+(b0) edge (b10) (b1) edge (b11)
+(a1) edge (a11)
+(d2) edge (d02)
+;
+\path
+(b0) edge (b00.west) (b00) edge (b00s)
+(b1) edge (b01)
+(b01) edge (b01s) (b01s) edge (c1)
+(c1) edge (c11) (c11) edge (c11s)
+;
+%\node<\tu>[right of=a11s] {\textbf{\Large\color{darkgreen}Yes}};
+\end{tikzpicture}%
+}
+
+% Structure abstraite / Sous-approximation / Inconclusif
+\def \sauinconc {%
+\begin{tikzpicture}[aS,node distance=1.1cm,shorthandon]
+\path[use as bounding box] (-0.5,-2.1) rectangle (10.25,2.2);
+
+\node[Aobj] (d02) {$\PHobjectif{d_0}{d_2}$};
+\node[Aproc,above of=d02] (d2) {$d_2$};
+
+\node[Asol,right of=d02] (d02s2) {};
+\node[Aproc,above right of=d02s2] (b0) {$b_0$};
+\node[Aobj,right of=b0] (b10) {$\PHobjectif{b_1}{b_0}$};
+\node[Asol,right of=b10] (b10s) {};
+\node[Aproc,right of=b10s] (a1) {$a_1$};
+\node[Aobj,right of=a1] (a01) {$\PHobjectif{a_0}{a_1}$};
+\node[Asol,right of=a01] (a01s) {};
+
+\node[Aproc, below of=b0] (b1) {$b_1$};
+\node[Aobj,right of=b1] (b11) {$\PHobjectif{b_1}{b_1}$};
+\node[Asol,right of=b11] (b11s) {};
+\node[Aobj,below of=b11] (b01) {$\PHobjectif{b_0}{b_1}$};
+\node[Asol,right of=b01] (b01s) {};
+\node[Aproc,right of=b01s] (c1) {$c_1$};
+\node[Aobj,right of=c1] (c01) {$\PHobjectif{c_0}{c_1}$};
+\node[Asol,right of=c01] (c01s) {};
+\node[Aproc,right of=c01s] (a0) {$a_0$};
+\node[Aobj,right of=a0] (a00) {$\PHobjectif{a_0}{a_0}$};
+\node[Asol,right of=a00] (a00s) {};
+
+\node[Aobj,above of=b10] (b00) {$\obj{b_0}{b_0}$};
+\node[Asol,right of=b00] (b00s) {};
+\node[Aobj,above of=a01] (a11) {$\obj{a_1}{a_1}$};
+\node[Asol,right of=a11] (a11s) {};
+\node[Aobj,above of=c01] (c11) {$\obj{c_1}{c_1}$};
+\node[Asol,right of=c11] (c11s) {};
+\node[Aobj,above of=a00] (a10) {$\PHobjectif{a_1}{a_0}$};
+\node at (a10.east) {\Large\color{red}\textbf{$\bot$}};
+
+\path
+  (b10) edge[loop,min distance=5mm] (b10)
+ ;
+\path
+(d02) edge (d02s2) (d02s2) edge (b1) edge (b0)
+(a01) edge (a01s) (a01s.south) edge (b1.north east)
+(b10) edge (b10s) (b10s) edge (a1)
+(b11) edge (b11s)
+(a1) edge (a01)
+(b0) edge (b10) (b1) edge (b11)
+(d2) edge (d02)
+;
+\path
+(b00) edge (b00s)
+(b0) edge (b00)
+ (b1) edge (b01)
+ (b01) edge (b01s) (b01s) edge (c1)
+ (c1) edge (c01)
+ (c01) edge (c01s) (c01s) edge (a0)
+ (a0) edge (a00) (a00) edge (a00s)
+;
+\path
+ (c1) edge (c11) (c11) edge (c11s)
+(a0) edge (a10)
+(a1) edge (a11)
+(a11) edge (a11s)
+;
+
+%\node[right of=a01s] {\textbf{\Large\color{darkyellow}Inconc}};
+
+\end{tikzpicture}%
+}
+
+% Structure abstraite / Sur-approximation / Non
+\def \saono {%
+\begin{tikzpicture}[aS,node distance=1.1cm,shorthandon]
+\path[use as bounding box] (-0.5,-2.1) rectangle (10.25,1.15);
+
+\node[Aobj] (d12) {$\PHobjectif{d_1}{d_2}$};
+\node[Asol,above right of=d12] (d12s1) {};
+\node[Aproc, right of=d12s1] (b2) {$b_2$};
+\node[Aobj,right of=b2] (b02) {$\PHobjectif{b_0}{b_2}$};
+\node[Asol,right of=b02] (b02s) {};
+\node[Aproc,right of=b02s] (d1) {$d_1$};
+\node[Aobj,right of=d1] (d11) {$\PHobjectif{d_1}{d_1}$};
+\node[Asol,right of=d11] (d11s) {};
+
+\node[Asol,below right of=d12] (d12s2) {};
+\node[Aproc, right of=d12s2] (b1) {$b_1$};
+\node[Aobj,right of=b1] (b01) {$\PHobjectif{b_0}{b_1}$};
+\node[Asol,right of=b01] (b01s) {};
+\node[Aproc,right of=b01s] (c1) {$c_1$};
+\node[Aobj,right of=c1] (c01) {$\PHobjectif{c_0}{c_1}$};
+\node[Asol,right of=c01] (c01s) {};
+\node[Aproc,right of=c01s] (a0) {$a_0$};
+\node[Aobj,right of=a0] (a10) {$\PHobjectif{a_1}{a_0}$};
+\node at (a10.east) {\Large\color{red}\textbf{$\bot$}};
+
+\path
+(d12) edge (d12s1) edge (d12s2) (d12s1) edge (b2) edge (c1) (d12s2) edge (b1)
+(b01) edge (b01s) (b01s) edge (c1)
+(b02) edge (b02s) (b02s) edge (d1)
+(c01) edge (c01s) (c01s) edge (a0)
+(d11) edge (d11s)
+(a0) edge (a10)
+(b1) edge (b01)
+(b2) edge (b02)
+(c1) edge (c01)
+(d1) edge (d11)
+;
+%\only<\value{anim1}>{ \node[above right of=c01s] {\textbf{\Large\color{red}No}};}
+\end{tikzpicture}%
+}
+
+% Structure abstraite / Sur-approximation / Inconclusif
+\def \saoinconc {%
+\begin{tikzpicture}[aS,node distance=1.1cm,shorthandon]
+\path[use as bounding box] (-0.5,-2.1) rectangle (10.25,1.15);
+
+\node[Aobj] (d02) {$\PHobjectif{d_0}{d_2}$};
+\node[Asol,above right of=d02] (d02s1) {};
+
+\node[Aproc, right of=d02s1] (b2) {$b_2$};
+\node[Aobj,right of=b2] (b12) {$\PHobjectif{b_1}{b_2}$};
+\node[Asol,right of=b12] (b12s) {};
+\node[Aproc,right of=b12s] (d1) {$d_1$};
+\node[Aobj,right of=d1] (d01) {$\PHobjectif{d_0}{d_1}$};
+\node[Asol,right of=d01] (d01s) {};
+
+\node[Asol,below right of=d02] (d02s2) {};
+%<-3>
+\node<-\tof>[Aproc, right of=d02s2] (b0) {$b_0$};
+\node<\tokp>[orange, thick, Aproc, right of=d02s2] (b0) {$b_0$};
+\node[Aobj,right of=b0] (b10) {$\PHobjectif{b_1}{b_0}$};
+\node[Asol,right of=b10] (b10s) {};
+%<-3>
+\node<-\tof>[Aproc,right of=b10s] (a1) {$a_1$};
+\node<\tokp>[orange, thick, Aproc,right of=b10s] (a1) {$a_1$};
+\node[Aobj,right of=a1] (a11) {$\PHobjectif{a_1}{a_1}$};
+\node[Asol,right of=a11] (a11s) {};
+
+\node[Aproc, below of=b0] (b1) {$b_1$};
+\node[Aobj,right of=b1] (b11) {$\PHobjectif{b_1}{b_1}$};
+\node[Asol,right of=b11] (b11s) {};
+
+\node<\tokp>[orange, font=\bfseries,below of=a11s] (kp) {Key processes};
+\path<\tokp>[orange, thick]
+        (kp) edge (a1)
+        (kp) edge (b0)
+;
+\path
+(d02) edge (d02s1) edge (d02s2) (d02s1) edge (b2) (d02s2) edge (b1) edge (b0)
+(a11) edge (a11s)
+(b10) edge (b10s) (b10s) edge (a1)
+(b11) edge (b11s)
+(b12) edge (b12s) (b12s) edge (d1) edge (a1)
+(d01) edge (d01s) (d01s.south) edge (b0)
+(a1) edge (a11)
+(b0) edge (b10) (b1) edge (b11) (b2) edge (b12)
+(d1) edge (d01)
+;
+%\node[below right of=d01s] {\textbf{\Large\color{yellow}Inconc}};
+\end{tikzpicture}%
+}
+
+\frame{\frametitle{Contribution}
+
+\begin{alertblock}{Scientific challenge}
+How can we cope with the analysis of \textbf{large-scale systems}, involving up to 1.000 interacting components?
+\end{alertblock}
+
+\begin{block}{Objectives of this part}
+\begin{itemize}
+\item Introduce a Process Algebra inspired framework based on a compact representation of the interactions
+\item Develop efficient \textbf{static analysis approaches} to answer most common problems 
+\item Apply the methodology to large-scale biological regulatory networks 
+\end{itemize}
+\end{block}
+
+\begin{block}{Joint work with}
+\begin{itemize}
+\item L. Paulev� (ETH Zurich), M. Folschette, O. Roux (IRCCyN) 
+\item K. Inoue (NII) 
+\end{itemize}
+\end{block}
+
+}
+
+% Définition du Process Hitting + sortes coopératives
+
+\frame{\frametitle{Intuitive principle of the Process Hitting framework}
+
+\begin{center}
+\begin{tabular}{l l p{70mm}}
+Process & = & component \texthl{$a$} at level \texthl{$i$}\\
+Interaction & = & \texthl{$a$} at level \texthl{$i$} makes \texthl{$b$} at level \texthl{$j$} increase or decrease to level \texthl{$k$}\\
+denoted & & \texthl{$\hit{a_i}{b_j}{b_k}$} (hit and bounce)\\
+\hline
+\end{tabular}
+
+\vfill
+{
+\begin{definition}[Interaction and Retroaction]\label{def:action}
+\emph{Interaction} ($\hit{a_i}{b_j}{b_k}$), where $a_i$ is the level of a process $a$ and $b_j\neq b_k$,
+
+\emph{Retroaction} ($\hit{a_i}{a_i}{a_k}$): when $a_i=b_j$.
+\end{definition}
+}
+\end{center}
+
+}
+
+\begin{frame}[t]
+  \frametitle{The Process Hitting modeling}
+%  \framesubtitle{\tcite{PMR12-MSCS}}
+
+% 1 : Sortes
+\only<1>{
+\tikzstyle{process}=[circle,minimum size=15pt,font=\footnotesize,inner sep=1pt]
+\tikzstyle{tick label}=[color=white, font=\footnotesize]
+\tikzstyle{tick}=[transparent]
+\tikzstyle{hit}=[transparent]
+\tikzstyle{selfhit}=[transparent, min distance=30pt,curve to]
+\tikzstyle{bounce}=[transparent]
+\tikzstyle{hlhit}=[transparent]
+\begin{center}\scalebox{\scaleex}{
+\begin{tikzpicture}
+\exphdef
+\end{tikzpicture}
+}\end{center}
+}
+
+% 2 : Processus
+\only<2>{
+\tikzstyle{process}=[circle,draw,minimum size=15pt,font=\footnotesize,inner sep=1pt]
+\tikzstyle{tick label}=[font=\footnotesize]
+\tikzstyle{tick}=[densely dotted]
+\tikzstyle{hit}=[transparent]
+\tikzstyle{selfhit}=[transparent, min distance=30pt,curve to]
+\tikzstyle{bounce}=[transparent]
+\tikzstyle{hlhit}=[transparent]
+\begin{center}\scalebox{\scaleex}{
+\begin{tikzpicture}
+\exphdef
+\end{tikzpicture}
+}\end{center}
+}
+
+% 3 : États
+\only<3>{
+\tikzstyle{hit}=[transparent]
+\tikzstyle{selfhit}=[transparent, min distance=30pt,curve to]
+\tikzstyle{bounce}=[transparent]
+\tikzstyle{hlhit}=[transparent]
+\begin{center}\scalebox{\scaleex}{
+\begin{tikzpicture}
+\exphdef
+
+\TState{3}{a_0,b_1,z_0}
+\end{tikzpicture}
+}\end{center}
+}
+
+% 4 : Actions
+\only<4->{
+\tikzstyle{tick}=[densely dotted]
+\tikzstyle{hit}=[->,>=angle 45]
+\tikzstyle{selfhit}=[min distance=30pt,curve to]
+\tikzstyle{bounce}=[densely dotted,>=stealth',->]
+\tikzstyle{hlhit}=[very thick]
+\begin{center}\scalebox{\scaleex}{
+\begin{tikzpicture}
+\exphdef
+\TState{4}{a_0,b_1,z_0}
+\TState{5}{a_0,b_1,z_1}
+\TState{6}{a_1,b_1,z_1}
+\TState{7}{a_1,b_1,z_2}
+\end{tikzpicture}
+}\end{center}
+}
+
+\medskip
+\begin{liste}
+  \item \tval{Sorts}: components \qex{$a$, $b$, $z$}
+\pause[2]
+  \item \tval{Processes}: local states / levels of expression \qex{$z_0$, $z_1$, $z_2$}
+\pause[3]
+  \item \tval{States}: sets of active processes%
+  \only<3-4>{\qex{$\PHetat{a_0, b_1, z_0}$}}%
+  \only<5>{\qex{$\PHetat{a_0, b_1, z_1}$}}%
+  \only<6>{\qex{$\PHetat{a_1, b_1, z_1}$}}%
+  \only<7>{\qex{$\PHetat{a_1, b_1, z_2}$}}%
+\pause[4]
+  \item \tval{Actions}: dynamics \qex{\only<4>{\underline}{$\PHfrappe{b_1}{z_0}{z_1}$}, \only<4-5>{\underline}{$\PHfrappe{a_0}{a_0}{a_1}$}, \only<6>{\underline}{$\PHfrappe{a_1}{z_1}{z_2}$}}
+\end{liste}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Adding cooperations}
+  \framesubtitle{\cite{PMR12-MSCS}}
+
+\begin{center}\scalebox{\scaleex}{
+\begin{tikzpicture}
+\exphcoop
+\end{tikzpicture}
+}\end{center}
+
+\medskip
+\only<-14>{
+\begin{liste}
+  \item How to introduce some \tval{cooperation} between sorts? \qex{$\PHfrappe{a_1 \wedge b_0}{z_1}{z_2}$}
+\pause[4]
+  \item Solution: a \tval{cooperative sort} \qex{$ab$} \only<12->{\quad to express \qex{$a_1 \wedge b_0$}}
+\pause[8]
+  \item Constraint: each configuration is represented by one process \qex{$\PHetat{a_1,b_0} \pause[11]\Rightarrow ab_{10}$}
+\pause[14]
+  \item Advantage: regular sort; drawbacks: complexity, temporal shift
+\end{liste}}
+\end{frame}
+
+
+
+%\subsubsection{Fixed Points}
+
+\begin{frame}[c]
+  \frametitle{Static Analysis: Fixed Points}
+  \framesubtitle{\cite{PMR10-TCSB}}
+
+\tval{Fixed point} = state where no action can be fired
+\begin{fleches}
+  \item avoid couples of processes bounded by an action
+\only<1>{\\\smallskip~}
+\only<2->{\item Hitless Graph \only<3->{\f \tval{n-cliques} = fixed points}}
+\end{fleches}
+
+\bigskip
+\begin{columns}
+\begin{column}{0.5\textwidth}
+
+\begin{center}
+\scalebox{0.7}{
+\begin{tikzpicture}
+\exdefb
+\exdefbfrappes
+\end{tikzpicture}
+}
+\end{center}
+
+\end{column}
+\begin{column}{0.5\textwidth}
+
+\only<2->{
+\begin{center}
+\scalebox{0.7}{
+\tikzstyle{current process}=[process,fill=red]
+\begin{tikzpicture}[hitless graph]
+\exdefb
+\exdefbsf
+\end{tikzpicture}
+\tikzstyle{current process}=[process,fill=blue]
+}
+\end{center}
+}
+
+\end{column}
+\end{columns}
+
+\bigskip
+\pause[6]
+Exponential complexity w.r.t.~the number of sorts
+
+\end{frame}
+
+%\begin{frame}
+%  \frametitle{Static analysis: successive reachability}
+%  \framesubtitle{\cite{PMR12-MSCS}}
+%  
+%  \begin{alertblock}{Problem}
+%  Given an initial state of a Process Hitting, is it possible to reach successively $a_i$, then $b_j$, then $a_k$, then $c_l$, $\ldots$? \\
+%  $\Rightarrow$ Combinatorial explosion of the dynamics to explore 
+%  \end{alertblock}
+%  
+%  \begin{block}{Key idea}
+%  Instead of checking the successive reachability $\mathcal{R}$, which is complex, we will check: 
+%  \begin{itemize}
+%  \item an \textbf{under-approximation} $\mathcal{P}$: if $\mathcal{P}$ is not satisfied, then $\mathcal{R}$ neither
+%  \item an \textbf{over-approximation} $\mathcal{Q}$: if $\mathcal{Q}$ is satisfied, then $\mathcal{R}$ too. 
+%  \end{itemize}
+%  \end{block}
+%  
+%\end{frame}  
+%%
+%\begin{frame}
+%  \frametitle{Static analysis: successive reachability}
+%  \framesubtitle{\cite{PMR12-MSCS}}
+%
+%Successive reachability of processes:
+%
+%\begin{columns}
+%\begin{column}{0.55\textwidth}
+%
+%\begin{center}
+%\scalebox{0.75}{
+%\begin{tikzpicture}
+%%\path[use as bounding box] (-1,-3) rectangle (7,2);
+%\exatt
+%
+%\TState{2-4}{a_0,b_0,b_2,c_0,d_0}
+%
+%\TState{5}{a_0,b_0,c_0,d_0}
+%\TState{6}{a_0,b_0,c_1,d_0}
+%\TState{7}{a_0,b_1,c_1,d_0}
+%\TState{8}{a_0,b_1,c_1,d_1}
+%\TState{9}{a_0,b_1,c_1,d_2}
+%
+%\node<3>[process,very thick] (d_1) at (d_1.center) {1?};
+%\node<3>[process,very thick] (b_1) at (b_1.center) {2?};
+%\node<3>[process,very thick] (d_2) at (d_2.center) {3?};
+%
+%\node<4-8>[process,very thick] (d_2) at (d_2.center) {1?};
+%\node<9>[process,very thick] (d_2) at (d_2.center) {};
+%
+%\only<5>{\THit{a_0}{hlhit}{c_0}{.north}{c_1}}
+%\path<5>[bounce,bend left,hlhit] \TBounce{c_0}{}{c_1}{.west};
+%\only<6>{\THit{c_1}{bend left=20pt,hlhit}{b_0}{.west}{b_1}}
+%\path<6>[bounce,bend left,hlhit] \TBounce{b_0}{}{b_1}{.south};
+%\only<7>{\THit{b_0}{hlhit}{d_0}{.west}{d_1}}
+%\path<7>[bounce,bend left,hlhit] \TBounce{d_0}{}{d_1}{.south};
+%\only<8>{\THit{b_1}{hlhit}{d_1}{.west}{d_2}}
+%\path<8>[bounce,bend left,hlhit] \TBounce{d_1}{}{d_2}{.south};
+%\end{tikzpicture}
+%}
+%\end{center}
+%
+%\end{column}
+%\begin{column}{0.45\textwidth}
+%
+%\pause
+%~\\~\\~\\~\\
+%\begin{itemize}
+%  \item Initial context
+%    \\ \rex{\PHetat{a_1, \{b_0, b_1\}, c_0, d_0}} \pause
+%  \item Objectives
+%    \\ \rex{$[\ \Rsh d_1 \PHconcat\ \Rsh b_1 \PHconcat\ \Rsh d_2\ ]$} \pause
+%    \\\smallskip \rex{$[\ \Rsh d_2\ ]$} \pause
+%\end{itemize}
+%
+%\end{column}
+%\end{columns}
+%
+%\medskip
+%\begin{center}
+%\f Concretization of the objective = scenario
+%
+%\ex{
+%\only<5>{\underline{$\PHfrappe{a_0}{c_0}{c_1}$}}\only<-4,6->{$\PHfrappe{a_0}{c_0}{c_1}$}~\PHconcat~
+%\only<6>{\underline{$\PHfrappe{b_0}{d_0}{d_1}$}}\only<-5,7->{$\PHfrappe{b_0}{d_0}{d_1}$}~\PHconcat~
+%\only<7>{\underline{$\PHfrappe{c_1}{b_0}{b_1}$}}\only<-6,8->{$\PHfrappe{c_1}{b_0}{b_1}$}~\PHconcat~
+%\only<8>{\underline{$\PHfrappe{b_1}{d_1}{d_2}$}}\only<-7,9->{$\PHfrappe{b_1}{d_1}{d_2}$}}
+%\end{center}
+%
+%\end{frame}
+%
+%
+%
+%\begin{frame}
+%  \frametitle{Over- and Under-approximations}
+%  \framesubtitle{\cite{PMR12-MSCS}}
+%
+%Static analysis by abstractions:
+%\begin{fleches}
+%  \item Directly checking an objective sequence $R$ is hard
+%  \item Rather check the approximations $P$ and $Q$, where \tval{$P \Rightarrow R \Rightarrow Q$}:
+%\end{fleches}
+%
+%\begin{center}
+%\scalebox{0.5}{
+%\figsa
+%}
+%\end{center}
+%
+%\only<-7>{~}
+%\only<8->{
+%Linear w.r.t.~the number of sorts and \\exponential w.r.t.~the number of processes in each sort
+%\begin{fleches}
+%  \item Efficient for big models with few levels of expression
+%\end{fleches}
+%}
+%\end{frame}
+%
+%\begin{frame}
+%  \frametitle{Under-approximation}
+%
+%\def \tu {3}
+%\def \tub {4}
+%\def \tuf {5}
+%
+%\begin{columns}
+%\begin{column}{0.48\textwidth}
+%\begin{center}
+%\scalebox{0.55}{
+%\begin{tikzpicture}
+%\exatt
+%\TState{-\tu}{a_1,b_1,c_1,d_0}
+%\TState{\tub-}{a_0,b_1,c_0,d_0}
+%\node[process,very thick] (d_2) at (d_2.center) {?};
+%\end{tikzpicture}
+%}
+%\end{center}
+%
+%\end{column}
+%\begin{column}{0.52\textwidth}
+%
+%\f New abstract structure
+%
+%\tval{Sufficient condition}:
+%\smallskip
+%
+%\only<2->{
+%\smallskip
+%\begin{itemize}
+%  \item \only<-\tu>{no cycle} \only<\tub->{\sout{no cycle}}
+%  \item \only<-\tu>{each objective has a solution} \only<\tub->{\sout{each objective has a solution}}
+%\end{itemize}
+%\begin{center}
+%  \only<\tu>{\Large\textcolor{darkgreen}{$R$ is \textbf{true}}} \only<\tuf>{\Large\textcolor{darkyellow}{\textbf{Inconclusive}}}
+%\end{center}
+%}
+%
+%\end{column}
+%\end{columns}
+%
+%\only<-\tu>{
+%\sauyes
+%}
+%
+%\only<\tub->{
+%\sauinconc
+%}
+%
+%\end{frame}
+%
+%
+%
+%\begin{frame}
+%  \frametitle{Over-approximation}
+%
+%\def \to {4}
+%\def \tob {5}
+%\def \tof {6}
+%\def \tokp {7}
+%
+%\begin{columns}
+%\begin{column}{0.48\textwidth}
+%\begin{center}
+%\scalebox{0.55}{
+%\begin{tikzpicture}
+%\exatt
+%\TState{-\to}{a_1,b_0,c_0,d_1}
+%\TState{\tob-}{a_1,b_1,c_1,d_0}
+%\node[process,very thick] (d_2) at (d_2.center) {?};
+%\end{tikzpicture}
+%}
+%\end{center}
+%\bigskip
+%
+%\end{column}
+%\begin{column}{0.52\textwidth}
+%
+%\tval{Necessary condition}:
+%
+%\medskip
+%\only<2->{
+%\only<3-\to>{\sout{There exists a traversal}}\only<2,\tob->{There exists a traversal}
+%with no cycle
+%
+%\smallskip
+%\begin{itemize}
+%  \item \only<3-\to>{\sout{objective $\rightarrow$ follow one solution}}\only<1-2,\tob->{objective $\rightarrow$ follow one solution}
+%  \item solution $\rightarrow$ follow all processes
+%  \item process $\rightarrow$ follow all objectives
+%\end{itemize}
+%\begin{center}
+%  \only<\to>{\Large\textcolor{red}{$R$ is \textbf{false}}}\only<\tof->{\Large\textcolor{darkyellow}{\textbf{Inconclusive}}}
+%\end{center}
+%}
+%
+%\end{column}
+%\end{columns}
+%
+%%\bigskip
+%
+%\only<1-\to>{
+%\saono
+%}
+%
+%\only<\tob->{
+%\saoinconc
+%}
+%
+%\end{frame}
+%
+%\begin{frame}
+%  \frametitle{Stochastic Features}
+%  \framesubtitle{\cite{PMR10-TSE}}
+%
+%\begin{itemize}
+%  \item Introduces time features
+%  \item Parameters: either $(r,sa)$, or the \tval{firing interval} $[d;D]$.
+%\end{itemize}
+%
+%\begin{columns}
+%\begin{column}{0.5\textwidth}
+%
+%\only<2->{
+%\scalebox{0.9}{
+%\begin{tikzpicture}[plot,xscale=0.35,yscale=1]
+%\draw[axe] (0,0) -- (15.5,0) node[right] {$t$};
+%\draw[axe] (0,0) -- (0,1);
+%\draw[ticks] (0,0) node[below] {$0$};
+%\draw[mean] (4,0) -- (4,0.9) node[right]{$\frac{1}{r}$};
+%\draw[dashed] (0.10127,0) -- (0.10127,0.9) node[right] {$d$} (14.75552,0) --
+%(14.75552,0.9) node[left] {$D$};
+%\pgfplothandlerlineto
+%\pgfplotxyfile{plots/BioAtlanSTIC-0409/erlang-0.25-1.table}
+%\pgfusepath{stroke}
+%\draw[interval] (0.10127,0) -- (14.75552,0);
+%\end{tikzpicture}
+%}
+%
+%\scalebox{0.9}{
+%\begin{tikzpicture}[plot,xscale=0.35,yscale=1]
+%\draw[axe] (0,0) -- (15.5,0) node[right] {$t$};
+%\draw[axe] (0,0) -- (0,1);
+%\draw[ticks] (0,0) node[below] {$0$};
+%\draw[mean] (4,0) -- (4,0.9) node[right]{$\frac{1}{r}$};
+%\draw[dashed] (1.29879,0) -- (1.29879,0.9) node[right] {$d$} (8.19327,0) --
+%(8.19327,0.9) node[left] {$D$};
+%\pgfplothandlerlineto
+%\pgfplotxyfile{plots/BioAtlanSTIC-0409/erlang-0.25-5.table}
+%\pgfusepath{stroke}
+%\draw[interval] (1.29879,0) -- (8.19327,0);
+%\end{tikzpicture}
+%}
+%
+%\scalebox{0.9}{
+%\begin{tikzpicture}[plot,xscale=0.35,yscale=1]
+%\draw[axe] (0,0) -- (15.5,0) node[right] {$t$};
+%\draw[axe] (0,0) -- (0,1);
+%\draw[ticks] (0,0) node[below] {$0$};
+%\draw[mean] (4,0) -- (4,0.9) node[right]{$\frac{1}{r}$};
+%\draw[dashed] (2.96888,0) -- (2.96888,0.9) node[left] {$d$} (5.18245,0) --
+%(5.18245,0.9) node[right] {$D$};
+%\pgfplothandlerlineto
+%\pgfplotxyfile{plots/BioAtlanSTIC-0409/erlang-0.25-50.table}
+%\pgfusepath{stroke}
+%\draw[interval] (2.96888,0) -- (5.18245,0);
+%\end{tikzpicture}
+%}
+%
+%~~\textcolor{lightred}{\rule{17mm}{4.5pt}} ~ action duration
+%}
+%
+%\end{column}
+%\begin{column}{0.5\textwidth}
+%\begin{center}
+%
+%\only<3->{
+%\scalebox{0.9}{
+%\begin{tikzpicture}
+%\path[use as bounding box] (-1,-1) rectangle (2,1);
+%\TSort{(0,0)}{a}{2}{l}
+%\TSort{(2,0)}{b}{2}{r}
+%\THit{a_0}{}{b_0}{.west}{b_1}
+%\THit{a_0}{out=-120,in=180,selfhit}{a_0}{.west}{a_1}
+%\path[bounce]
+%\TBounce{a_0}{bend left}{a_1}{.south}
+%\TBounce{b_0}{bend left}{b_1}{.south}
+%;
+%\TState{3-}{a_0,b_0}
+%\end{tikzpicture}
+%}
+%
+%\scalebox{0.9}{
+%\begin{tikzpicture}[plot]
+%\node[anchor=west] at (0,0.4) {$\PHfrappe{a_0}{b_0}{b_1}$};
+%\draw[axe] (0,0) -- (4,0) node[right] {$t$};
+%\draw (0,0.1) -- (0,-0.1);
+%\draw[interval] (1.7,0) -- (3,0);
+%
+%\node[anchor=west] at (0,-0.6) {$\PHfrappe{a_0}{a_0}{a_1}$};
+%\draw[axe] (0,-1) -- (4,-1) node[right] {$t$};
+%\draw (0,-0.9) -- (0,-1.1);
+%\draw[interval,orange] (0.2,-1) -- (1.5,-1);
+%\end{tikzpicture}
+%}
+%
+%\noindent
+%\f $b_1$ reached with a \tval{very low probability}.
+%}
+%
+%\end{center}
+%\end{column}
+%\end{columns}
+%
+%\pause[4]
+%\bigskip
+%\begin{fleches}
+%  \item Tests by \textbf{simulation} and \textbf{model-checking}
+%\end{fleches}
+%
+%\end{frame}
+%
+%
+%
+

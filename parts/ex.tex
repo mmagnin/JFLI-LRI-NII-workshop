@@ -1,0 +1,434 @@
+% Exemples
+
+%%% Exemple pour la définition du Process Hitting %%%
+\def \exphdef {
+\path[use as bounding box] (-0.5,-0.5) rectangle (6.5,4.5);
+
+\TSort{(0,3)}{a}{2}{l}
+\TSort{(0,0)}{b}{2}{l}
+\TSort{(6,1)}{z}{3}{r}
+
+\THit{a_1}{}{z_1}{.west}{z_2}
+\THit{b_1}{}{z_0}{.west}{z_1}
+\THit{a_0}{out=250,in=200,selfhit}{a_0}{.west}{a_1}
+
+\path[bounce,bend left]
+\TBounce{z_0}{}{z_1}{.south}
+\TBounce{z_1}{}{z_2}{.south}
+\TBounce{a_0}{}{a_1}{.south}
+;
+}
+
+
+
+%%% Exemple pour la coopération %%%
+\def \exphcoop {
+\path[use as bounding box] (-0.5,-0.5) rectangle (6.5,4.5);
+
+% Actions de màj grisées
+\only<6->{
+\THit{a_1}{ulhit,color=lightgray}{ab_0}{.west}{ab_2}
+\THit{a_1}{ulhit,color=lightgray}{ab_1}{.west}{ab_3}
+\path[bounce,bend left,pulhit] \TBounce{ab_0}{bulhit}{ab_2}{.south} \TBounce{ab_1}{bulhit}{ab_3}{.south} ;
+}
+
+\only<7->{
+\THit{a_0}{ulhit}{ab_2}{.west}{ab_0}
+\THit{a_0}{ulhit}{ab_3}{.west}{ab_1}
+\path[bounce,bend right,pulhit] \TBounce{ab_2}{bulhit}{ab_0}{.north} \TBounce{ab_3}{bulhit}{ab_1}{.north} ;
+}
+
+\only<8->{
+\THit{b_0}{ulhit}{ab_3}{.west}{ab_2}
+\THit{b_0}{ulhit}{ab_1}{.west}{ab_0}
+\THit{b_1}{ulhit}{ab_0}{.west}{ab_1}
+\THit{b_1}{ulhit}{ab_2}{.west}{ab_3}
+\path[bounce,bend right,pulhit] \TBounce{ab_1}{bulhit}{ab_0}{.north} \TBounce{ab_3}{bulhit}{ab_2}{.north} ;
+\path[bounce,bend left,pulhit] \TBounce{ab_0}{bulhit}{ab_1}{.south} \TBounce{ab_2}{bulhit}{ab_3}{.south} ;
+}
+
+% Sortes
+\TSort{(0,3)}{a}{2}{l}
+\TSort{(0,0)}{b}{2}{l}
+\TSort{(6,1)}{z}{3}{r}
+
+% Deux actions disjointes en exemple
+\only<2-3>{
+\THit{a_1}{}{z_1}{.north west}{z_2}
+\path[bounce,bend left]
+\TBounce{z_1}{}{z_2}{.south} ;
+
+\THit{b_0}{}{z_1}{.west}{z_2}
+\path[bounce,bend left=55]
+\TBounce{z_1}{}{z_2}{.south west} ;
+}
+
+% Processus d'exemple
+\TState{3}{a_1,b_1,z_1}
+
+% Sorte coopérative et arcs
+\only<4->{
+\TSetTick{ab}{0}{00}
+\TSetTick{ab}{1}{01}
+\TSetTick{ab}{2}{10}
+\TSetTick{ab}{3}{11}
+\TSort{(3,0.5)}{ab}{4}{l}
+}
+
+% Arcs de màj noirs de la sc
+\only<5>{
+\THit{a_1}{thick}{ab_0}{.west}{ab_2}
+\THit{a_1}{thick}{ab_1}{.west}{ab_3}
+\path[bounce,thick,bend left] \TBounce{ab_0}{thick}{ab_2}{.south} \TBounce{ab_1}{thick}{ab_3}{.south} ;
+}
+
+\only<6>{
+\THit{a_0}{thick}{ab_2}{.west}{ab_0}
+\THit{a_0}{thick}{ab_3}{.west}{ab_1}
+\path[bounce,thick,bend right] \TBounce{ab_2}{thick}{ab_0}{.north} \TBounce{ab_3}{thick}{ab_1}{.north} ;
+}
+
+\only<7>{
+\THit{b_0}{thick}{ab_3}{.west}{ab_2}
+\THit{b_0}{thick}{ab_1}{.west}{ab_0}
+\THit{b_1}{thick}{ab_0}{.west}{ab_1}
+\THit{b_1}{thick}{ab_2}{.west}{ab_3}
+\path[bounce,thick,bend right] \TBounce{ab_1}{thick}{ab_0}{.north} \TBounce{ab_3}{thick}{ab_2}{.north} ;
+\path[bounce,thick,bend left] \TBounce{ab_0}{thick}{ab_1}{.south} \TBounce{ab_2}{thick}{ab_3}{.south} ;
+}
+
+% État d'exemple pour màj de la sc
+\TState{8-9}{a_1,b_0}
+\TState{10}{a_1,b_0,ab_0,ab_1,ab_2,ab_3}
+\TState{11}{a_1,b_0,ab_2}
+\only<9-11>{
+\THit{a_1}{}{ab_0}{.west}{ab_2}
+\THit{a_1}{}{ab_1}{.west}{ab_3}
+\THit{b_0}{}{ab_3}{.west}{ab_2}
+\THit{b_0}{}{ab_1}{.west}{ab_0}
+\path[bounce,bend left] \TBounce{ab_0}{}{ab_2}{.south} \TBounce{ab_1}{}{ab_3}{.south} ;
+\path[bounce,bend right] \TBounce{ab_1}{}{ab_0}{.north} \TBounce{ab_3}{}{ab_2}{.north} ;
+}
+
+% État d'exemple pour action de la sc
+\TState{12}{a_1,b_0,z_1,ab_2}
+\TState{13-14}{a_1,b_0,z_2,ab_2}
+
+% Arc sortant de la sc
+\only<12-14>{
+\THit{ab_2}{thick}{z_1}{.west}{z_2}
+\path[bounce,bend left,thick] \TBounce{z_1}{thick}{z_2}{.south} ;
+}
+
+% Arc sortant de la sc
+%\only<15->{
+%\THit{ab_2}{}{z_1}{.west}{z_2}
+%\path[bounce,bend left] \TBounce{z_1}{}{z_2}{.south} ;
+%}
+
+}
+
+
+
+%%% Exemple pour l'inférence %%%
+\def \exphinf {
+% Sortes
+\TSort{(0,3)}{a}{2}{l}
+\TSort{(0,0)}{b}{2}{l}
+\TSort{(6,0)}{z}{3}{r}
+
+% Sorte coopérative et arcs
+\TSetTick{ab}{0}{00}
+\TSetTick{ab}{1}{01}
+\TSetTick{ab}{2}{10}
+\TSetTick{ab}{3}{11}
+\TSort{(3,0)}{ab}{4}{l}
+
+% Actions de màj grisées
+\THit{a_1}{ulhit}{ab_0}{.west}{ab_2}
+\THit{a_1}{ulhit}{ab_1}{.west}{ab_3}
+\path[bounce,bend left,pulhit] \TBounce{ab_0}{bulhit}{ab_2}{.south} \TBounce{ab_1}{bulhit}{ab_3}{.south};
+
+\THit{a_0}{ulhit}{ab_2}{.west}{ab_0}
+\THit{a_0}{ulhit}{ab_3}{.west}{ab_1}
+\path[bounce,bend right,pulhit] \TBounce{ab_2}{bulhit}{ab_0}{.north} \TBounce{ab_3}{bulhit}{ab_1}{.north};
+
+\THit{b_0}{ulhit}{ab_3}{.west}{ab_2}
+\THit{b_0}{ulhit}{ab_1}{.west}{ab_0}
+\THit{b_1}{ulhit}{ab_0}{.west}{ab_1}
+\THit{b_1}{ulhit}{ab_2}{.west}{ab_3}
+\path[bounce,bend right,pulhit] \TBounce{ab_1}{bulhit}{ab_0}{.north} \TBounce{ab_3}{bulhit}{ab_2}{.north};
+\path[bounce,bend left,pulhit] \TBounce{ab_0}{bulhit}{ab_1}{.south} \TBounce{ab_2}{bulhit}{ab_3}{.south};
+
+% Arcs sortant de la sc
+\THit{ab_2}{ulhit}{z_1}{.north west}{z_2}
+\THit{ab_2}{ulhit}{z_0}{.west}{z_1}
+\path[bounce,bend left,pulhit] \TBounce{z_1}{bulhit}{z_2}{.south} \TBounce{z_0}{bulhit}{z_1}{.south};
+
+\THit{ab_3}{ulhit}{z_2}{.west}{z_1}
+\THit{ab_3}{ulhit}{z_0}{.west}{z_1}
+\THit{ab_1}{ulhit}{z_2}{.west}{z_1}
+\THit{ab_1}{ulhit}{z_0}{.west}{z_1}
+\path[bounce,bend left,pulhit] \TBounce{z_2}{bulhit,bend right}{z_1}{.north};
+
+\THit{ab_0}{ulhit}{z_2}{.west}{z_1}
+\THit{ab_0}{ulhit}{z_1}{.south west}{z_0}
+\path[bounce,bend right,pulhit] \TBounce{z_2}{bulhit}{z_1}{.north} \TBounce{z_1}{bulhit}{z_0}{.north};
+
+}
+
+
+
+%%% Exemple pour l'inférence (sans arcs grisés) %%%
+\def \exphinfblack {
+% Sortes
+\TSort{(0,3)}{a}{2}{l}
+\TSort{(0,0)}{b}{2}{l}
+\TSort{(6,0)}{z}{3}{r}
+
+% Sorte coopérative et arcs
+\TSetTick{ab}{0}{00}
+\TSetTick{ab}{1}{01}
+\TSetTick{ab}{2}{10}
+\TSetTick{ab}{3}{11}
+\TSort{(3,0)}{ab}{4}{l}
+
+% Actions de màj grisées
+\THit{a_1}{}{ab_0}{.west}{ab_2}
+\THit{a_1}{}{ab_1}{.west}{ab_3}
+\path[bounce,bend left] \TBounce{ab_0}{}{ab_2}{.south} \TBounce{ab_1}{}{ab_3}{.south};
+
+\THit{a_0}{}{ab_2}{.west}{ab_0}
+\THit{a_0}{}{ab_3}{.west}{ab_1}
+\path[bounce,bend right] \TBounce{ab_2}{}{ab_0}{.north} \TBounce{ab_3}{}{ab_1}{.north};
+
+\THit{b_0}{}{ab_3}{.west}{ab_2}
+\THit{b_0}{}{ab_1}{.west}{ab_0}
+\THit{b_1}{}{ab_0}{.west}{ab_1}
+\THit{b_1}{}{ab_2}{.west}{ab_3}
+\path[bounce,bend right] \TBounce{ab_1}{}{ab_0}{.north} \TBounce{ab_3}{}{ab_2}{.north};
+\path[bounce,bend left] \TBounce{ab_0}{}{ab_1}{.south} \TBounce{ab_2}{}{ab_3}{.south};
+
+% Arcs sortant de la sc
+\THit{ab_2}{}{z_1}{.north west}{z_2}
+\THit{ab_2}{}{z_0}{.west}{z_1}
+\path[bounce,bend left] \TBounce{z_1}{}{z_2}{.south} \TBounce{z_0}{}{z_1}{.south};
+
+\THit{ab_3}{}{z_2}{.west}{z_1}
+\THit{ab_3}{}{z_0}{.west}{z_1}
+\THit{ab_1}{}{z_2}{.west}{z_1}
+\THit{ab_1}{}{z_0}{.west}{z_1}
+\path[bounce,bend left] \TBounce{z_2}{,bend right}{z_1}{.north};
+
+\THit{ab_0}{}{z_2}{.west}{z_1}
+\THit{ab_0}{}{z_1}{.south west}{z_0}
+\path[bounce,bend right] \TBounce{z_2}{}{z_1}{.north} \TBounce{z_1}{}{z_0}{.north};
+
+}
+
+
+
+%%% Exemple 2 pour l'inférence (projections) %%%
+\def \exphinfproj {
+% Sortes
+\TSort{(0,3)}{a}{2}{l}
+\TSort{(0,0)}{b}{2}{l}
+\TSort{(6,1)}{z}{2}{r}
+
+% Sorte coopérative et arcs
+\TSetTick{ab}{0}{00}
+\TSetTick{ab}{1}{01}
+\TSetTick{ab}{2}{10}
+\TSetTick{ab}{3}{11}
+\TSort{(3,0)}{ab}{4}{l}
+
+% Actions de màj grisées
+\THit{a_1}{ulhit}{ab_0}{.west}{ab_2}
+\THit{a_1}{ulhit}{ab_1}{.west}{ab_3}
+\path[bounce,bend left,pulhit] \TBounce{ab_0}{bulhit}{ab_2}{.south} \TBounce{ab_1}{bulhit}{ab_3}{.south} ;
+
+\THit{a_0}{ulhit}{ab_2}{.west}{ab_0}
+\THit{a_0}{ulhit}{ab_3}{.west}{ab_1}
+\path[bounce,bend right,pulhit] \TBounce{ab_2}{bulhit}{ab_0}{.north} \TBounce{ab_3}{bulhit}{ab_1}{.north} ;
+
+\THit{b_0}{ulhit}{ab_3}{.west}{ab_2}
+\THit{b_0}{ulhit}{ab_1}{.west}{ab_0}
+\THit{b_1}{ulhit}{ab_0}{.west}{ab_1}
+\THit{b_1}{ulhit}{ab_2}{.west}{ab_3}
+\path[bounce,bend right,pulhit] \TBounce{ab_1}{bulhit}{ab_0}{.north} \TBounce{ab_3}{bulhit}{ab_2}{.north} ;
+\path[bounce,bend left,pulhit] \TBounce{ab_0}{bulhit}{ab_1}{.south} \TBounce{ab_2}{bulhit}{ab_3}{.south} ;
+
+% Arcs sortant de la sc
+\THit{ab_3}{ulhit}{z_0}{.west}{z_1}
+\path[bounce,bend left,pulhit] \TBounce{z_0}{bulhit}{z_1}{.south} ;
+
+\THit{ab_0}{ulhit}{z_1}{.west}{z_0}
+\path[bounce,bend right,pulhit]\TBounce{z_1}{bulhit}{z_0}{.north} ;
+}
+
+
+
+%%% Exemple sans sorte coopérative pour l'inférence %%%
+\def \exphinfprojssc {
+% Sortes
+\TSort{(0,3)}{a}{2}{l}
+\TSort{(0,0)}{b}{2}{l}
+\TSort{(6,0)}{z}{3}{r}
+
+\THit{a_1}{ulhit}{z_0}{.west}{z_1}
+\THit{a_1}{ulhit}{z_1}{.north west}{z_2}
+\THit{a_0}{ulhit}{z_1}{.south west}{z_0}
+\THit{a_0}{ulhit}{z_2}{.west}{z_1}
+\path[bounce,bend left,pulhit] \TBounce{z_0}{bulhit}{z_1}{.south} \TBounce{z_1}{bulhit}{z_2}{.south}
+  \TBounce{z_1}{bulhit,bend right}{z_0}{.north} \TBounce{z_2}{bulhit,bend right}{z_1}{.north} ;
+
+\THit{b_0}{ulhit}{z_0}{.west}{z_1}
+\THit{b_0}{ulhit}{z_1}{.north west}{z_2}
+\THit{b_1}{ulhit}{z_1}{.south west}{z_0}
+\THit{b_1}{ulhit}{z_2}{.west}{z_1}
+%\path[bounce,bend left,pulhit] \TBounce{z_0}{bulhit}{z_1}{.south} \TBounce{z_1}{bulhit}{z_2}{.south}
+%  \TBounce{z_1}{bulhit,bend right}{z_0}{.north} \TBounce{z_2}{bulhit,bend right}{z_1}{.north} ;
+}
+
+
+
+%%% Exemple atteignabilité
+\def \exatt {
+\path[use as bounding box] (-1,-3) rectangle (7,2.7);
+\TSort{(0,0)}{a}{2}{l}
+\TSort{(3,0)}{b}{3}{l}
+\TSort{(6,0)}{d}{3}{r}
+\TSort{(2,-2)}{c}{2}{b}
+
+\THit{a_0}{}{c_0}{.north}{c_1}
+\THit{a_1}{}{b_1}{.west}{b_0}
+\THit{c_1}{bend left=20pt}{b_0}{.west}{b_1}
+\THit{b_1.south west}{->}{a_0}{.east}{a_1}
+\THit{b_0}{}{d_0}{.west}{d_1}
+\THit{b_1}{}{d_1}{.west}{d_2}
+\THit{d_1}{}{b_0}{.north east}{b_2}
+\THit{c_1}{bend right=80pt,distance=80pt}{d_1}{.east}{d_0}
+\THit{b_2}{distance=120pt,out=30,in=40}{d_0}{.east}{d_2}
+
+\path[bounce,bend left]
+\TBounce{d_0}{}{d_1}{.south}
+\TBounce{d_1}{}{d_2}{.south}
+\TBounce{c_0}{}{c_1}{.west}
+\TBounce{b_0}{}{b_1}{.south}
+\TBounce{d_1}{}{d_0}{.north}
+;
+\path[bounce,bend right]
+\TBounce{a_0}{}{a_1}{.south}
+\TBounce{b_0}{}{b_2}{.south}
+\TBounce{b_1}{}{b_0}{.north}
+\TBounce{d_0}{bend right=50pt,distance=40pt}{d_2}{.south}
+;
+}
+
+
+
+%%% Figure de présentation de l'analyse d'atteignabilité
+\def \figsa {
+\begin{tikzpicture}
+\path[use as bounding box] (-5,-3.5) rectangle (5,3.5);
+\definecolor{r2}{RGB}{238,10,38}
+
+\path<2->[shading=1, inner color=r2, outer color=white] (3.5,-2.8) -- (4.4,3.2) -- (0,3) -- (-4.5,1.4) -- (-2.5,-2.5) -- (0,-3.6) -- (2.8,-2.8);
+%\path<2->[shading, inner color=r2, outer color=white, border color=white] (2.8,-2.8) -- (4.5,4.5) -- (0,3.9) -- (-4.5,1.8) -- (-5,-3) -- (0,-3.2) -- (2.8,-2.8);
+\draw<2->[thick,fill=white] (2.5,-2.1) -- (3,2.5) -- (-2.7,1.3) -- (-2,-2) -- (2.5,-2.1);
+\draw<6->[thick,fill=lightyellow] (2.5,-2.1) -- (3,2.5) -- (-2.7,1.3) -- (-2,-2) -- (2.5,-2.1);
+
+\node<2->[text width=3.5cm, color=red] (s1) at (-5,2) {Over-Approximation};
+\path<2->[->,very thick,color=red] (s1.south) edge (-3.5,1.2);
+%\node<2->[text width=3cm,color=black] (i1) at (3.7,.2) {$\Rightarrow$};
+\node<2->[text width=3cm,color=black] (q) at (4.5,.2) {$\neg Q$};
+
+\draw<4->[thick, fill=green] (.5,-.8) -- (1,0) -- (.3,1) -- (-1,.5) -- (-.5,-.5) -- (.5,-.8);
+\node<4->[text width=3.5cm,color=darkgreen] (s2) at (5.2,-1.5) {Under-Approximation};
+\node<4->[text width=3cm,color=black] (p) at (1.8,.2) {$P$};
+%\node<4->[text width=3cm,color=black] (i1) at (2.25,.2) {$\Rightarrow$};
+
+% reaching set
+\node[text width=3cm,color=darkcyan] (s) at (1.8,1.7) {Exact solution};
+\node<1->[text width=3cm,color=darkcyan] (s0) at (0,0) {};
+\draw[color=darkcyan, thick] (0,0) ellipse (2 and 1.5);
+%\path<1>[draw=white] (2.8,-2.8) -- (4.5,4.5) -- (0,3.9) -- (-4.5,1.8) -- (-5,-3) -- (-2.5,-3.5) -- (0,-3.2) -- (2.8,-2.8);
+\node[text width=3cm,color=black] (r) at (2.8,.2) {$R$};
+
+\path<4->[->,very thick,color=darkgreen] (s2) edge (.6,-.4);
+
+\tikzstyle{point}=[circle,draw=blue,fill=blue,minimum size=5pt,inner sep=0pt]
+
+%\only<5->{
+\only<3->{
+\node[point] at (-2.4,-2) {};
+\node[point] at (-2,2) {};
+}
+\only<5->{
+\node[point] at (0,0) {};
+}
+\only<7->{
+\node[point] at (-.5,-1.1) {};
+\node[point] at (2.5,1) {};
+}
+%}
+
+\end{tikzpicture}
+}
+
+
+
+
+%%% Exemple pour points fixes
+\def \exdefb {
+\path[use as bounding box] (0,-1) rectangle (4,4);
+
+\TSort{(0,0)}{z}{3}{l}
+\TSort{(2,4)}{b}{2}{t}
+\TSort{(4,1)}{a}{2}{r}
+}
+
+%%% Frappes pour l'exemple des points fixes
+\def \exdefbfrappes {
+\THit{b_0}{}{z_1}{.east}{z_2}
+\THit{b_1}{}{z_0}{.north east}{z_2}
+\THit{a_0}{}{b_1}{.south}{b_0}
+\THit{a_1}{out=60,in=0,selfhit}{a_1}{.east}{a_0}
+
+\path[bounce,bend right]
+\TBounce{z_1}{}{z_2}{.south}
+\TBounce{z_0}{bend right=50}{z_2}{.south east}
+;
+\path[bounce,bend left]
+\TBounce{a_1}{}{a_0}{.north}
+\TBounce{b_1}{}{b_0}{.south}
+;
+
+\onslide<1-3> { \THit{z_0}{}{a_0}{.west}{a_1} }
+\onslide<4> { \THit{z_0}{dashed}{a_0}{.west}{a_1} }
+
+\only<1-4>{
+\path[bounce,bend left]
+\TBounce{a_0}{}{a_1}{.south}
+;}
+}
+
+%%% Non-frappes pour l'exemple des points fixes
+\def \exdefbsf {
+\path[use as bounding box] (0,-1) rectangle (4,4);
+\node[process,draw=red,thick] (a_1) at (a_1.center) {};
+
+\path (z_0) edge (b_0) (b_0) edge (a_0);
+\path (z_2) edge (b_0) edge (a_0);
+\path (z_2) edge (b_1);
+\path (z_1) edge (b_1) edge (a_0);
+%\path<-3> (z_0) edge (a_0);
+
+\path<3->[very thick] (z_2) edge (b_0) edge (a_0) (b_0) edge (a_0);
+\path<4->[very thick] (z_0) edge (b_0);
+\path<4>[dashed, very thick] (z_0) edge (a_0);
+\path<5->[very thick] (z_0) edge (a_0);
+
+\TState{3-}{z_2,b_0,a_0}
+\TState{4-}{z_0,b_0,a_0}
+}

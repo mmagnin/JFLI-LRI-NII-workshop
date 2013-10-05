@@ -1,0 +1,94 @@
+% Performances et conclusion
+
+
+\begin{frame}[c]
+  \frametitle{Implementation}
+
+\small
+\tval{Workflow}:
+\begin{itemize}
+  \item Read and translate the models with \tval{OCaml}\\
+        \quad\f Uses the existing free library \tval{Pint}\\
+        \quad\f Documentation + examples: \url{http://processhitting.wordpress.com/}
+  \item Express the problem in \tval{ASP} (logic programming)\\
+        \quad\f Solve with \tval{Clingo} (\tval{Gringo} + \tval{Clasp})
+\end{itemize}
+
+\pause
+\bigskip
+\begin{tabular}{c||r@{+}l|c|c||c|c||c|c|}
+\multicolumn{5}{c||}{Model specifications} & \multicolumn{2}{c||}{IG inference} & \multicolumn{2}{c|}{Parameters inference}\\
+\hline
+\tval{Name} & S & CS & P & A & $\Delta t$ & Edges & $\Delta t$ & Parameters\\
+\hline
+  \tval{\ex{[EGFR20]}} & \tval{20} & 22 & 152 & 399 & \tval{1s} & 50 & \tval{1s} & 191\\
+\hline
+  \tval{\ex{[TCRSIG40]}} & \tval{40} & 14 & 156 & 301 & \tval{1s} & 54 & \tval{1s} & 143\\
+\hline
+  \tval{\ex{[TCRSIG94]}} & \tval{94} & 39 & 448 & 1124 & \tval{13s} & 169 & $\infty$ & $2.10^9$\\
+\hline
+  \tval{\ex{[EGFR104]}} & \tval{104} & 89~ & 748 & 2356 & \tval{4min} & 241 & \tval{1min 30s} & $1.10^6 / 2.10^6$\\
+\hline
+\end{tabular}
+
+S = Sorts \quad CS = Cooperative sorts \quad P = Processes \quad A = Actions
+
+\bigskip
+\quad\tval{\ex{[EGFR20]}}: Epidermal Growth Factor Receptor, by \"Ozg\"ur Sahin et al.\\
+\quad\tval{\ex{[EGFR104]}}: Epidermal Growth Factor Receptor, by Regina Samaga et al.\\
+\quad\tval{\ex{[TCRSIG40]}}: T-Cell Receptor Signaling, by Steffen Klamt et al.\\
+\quad\tval{\ex{[TCRSIG94]}}: T-Cell Receptor Signaling, by Julio Saez-Rodriguez et al.
+
+\end{frame}
+
+
+
+\begin{frame}[c]
+  \frametitle{Summary}
+
+\only<1>{
+\begin{block}{Process Hitting and ASP}
+\begin{itemize}
+  \item Inference of the \tval{complete Interaction Graph}
+  \item Inference of the \tval{possibly partial Parametrization}
+  \item Enumerate all full \& \tval{admissible Parametrizations}
+\end{itemize}
+\quad\quad\f Exhaustive approaches
+\end{block}
+
+\bigskip
+\tval{Complexity}: linear in the number of genes, exponential in the number of regulators of one gene
+
+}
+
+\only<2>{
+\begin{block}{Contribution: new translation Process Hitting $\rightsquigarrow$ Ren\'e Thomas}
+\begin{fleches}
+  \item New \tval{formal link} between the two models
+  \item More \tval{visibility} to the Process Hitting
+  \item Inference approach that takes benefit from both the Process Hitting compact structure and the power of ASP 
+\end{fleches}
+\end{block}
+}
+
+\end{frame}
+
+\frame{\frametitle{Further work}
+
+\begin{alertblock}{Models and algorithms}
+\begin{itemize}
+\item Add \textbf{priorities} in the Process Hitting framework and adapt the static analyses approaches for this enriched model \cite{FolschetteCS2Bio13} 
+\item From priorities to \textbf{quantitative timing information}
+\item Connect Process Hitting compact structure with \textbf{decomposition techniques} in continuous approaches \cite{ammarreduction2012, ChancellorACMR13}
+\end{itemize}
+\end{alertblock}
+
+\begin{block}{Application}
+\begin{itemize}
+\item Use the approach for the analysis of \textbf{larger} biological networks 
+\item Contribute to the \textbf{discovery} of biological regulatory networks based on biological data 
+\item Study key properties (e.g. concept of \textbf{resilience})
+\end{itemize}
+\end{block}
+
+}

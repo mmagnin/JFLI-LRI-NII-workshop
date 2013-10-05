@@ -1,0 +1,322 @@
+\documentclass[hyperref,french,usenames,xcolor=dvipsnames]{beamer}
+\mode<presentation>
+{
+\usepackage{beamerthemesplit}
+\usetheme[compress,secheader]{Madrid}
+\setbeamercovered{transparent}
+}
+%\usepackage{beamerarticle}
+
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{color} 
+\usepackage{comment}
+%\usepackage{epsfig}
+\usepackage{xspace}
+\usepackage{stmaryrd}
+%\usepackage{theorem} % Styles suppl√©mentaires pour th√©or√®mes
+\usepackage{url}
+\usepackage{array}  % Tableaux √©volu√©s
+\usepackage{multirow}  % Pour des colonnes sur plusieurs lignes
+%\usepackage{soul}
+\usepackage{gastex}
+\usepackage[latin1]{inputenc}   %accents 8 bits dans le source
+%\usepackage[english]{algorithme}
+%\usepackage[T1]{fontenc} %pour un beau PDF sous Linux ; ‡ retirer sous Mac 
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{ulem}  % Pour l'attribut barre
+
+
+%\usepackage[english]{babel}
+%\usepackage{times}
+%\usepackage[utf8]{inputenc}
+%\usepackage{amssymb}
+\usepackage{movie15}
+%\usepackage{graphicx,color} 
+\usepackage{hyperref}
+
+
+\usepackage{tikz}
+\newdimen\pgfex
+\newdimen\pgfem
+\usetikzlibrary{arrows,shapes,shadows,scopes}
+\usetikzlibrary{positioning}
+\usetikzlibrary{matrix}
+\usetikzlibrary{decorations.text}
+\usetikzlibrary{decorations.pathmorphing}
+
+\input{macros}
+\input{macros-ph}
+\input{macros-abstr}
+
+\def\Pint{\textsc{PINT}}
+\def\PH{\mathcal{PH}}
+
+\tikzstyle{sort}=[fill=lightgray, rounded corners, draw=black]
+\tikzstyle{process}=[circle,draw,minimum size=15pt,font=\footnotesize,inner sep=1pt]
+\tikzstyle{black process}=[process, draw=blue, fill=red,text=black,font=\bfseries]
+\tikzstyle{highlighted process}=[current process, fill=gray]
+\tikzstyle{process box}=[fill=none,draw=black,rounded corners]
+\tikzstyle{current process}=[process,fill=blue]
+\tikzstyle{tick label}=[font=\footnotesize]
+\tikzstyle{tick}=[densely dotted]
+\tikzstyle{hit}=[->,>=angle 45]
+\tikzstyle{selfhit}=[min distance=30pt,curve to]
+\tikzstyle{bounce}=[densely dotted,>=stealth',->]
+\tikzstyle{hlhit}=[very thick]
+\tikzstyle{ulhit}=[draw=lightgray,fill=lightgray]
+\tikzstyle{pulhit}=[fill=lightgray]
+\tikzstyle{bulhit}=[draw=lightgray]
+
+\tikzstyle{hitless graph}=[every edge/.style={draw=red,-}]
+
+\tikzstyle{aS}=[every edge/.style={draw,->}]
+\tikzstyle{Asol}=[draw,circle,minimum size=5pt,inner sep=0]
+\tikzstyle{Aproc}=[draw]
+\tikzstyle{Aobj}=[]
+
+\renewcommand{\TState}[2]{
+  \foreach \proc in {#2} {
+        \only<#1>{ \node[current process] (\proc) at (\proc.center) {}; }
+  };
+}
+
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{darkyellow}{rgb}{0.5,0.5,0}
+\definecolor{lightyellow}{rgb}{1,1,0.6}
+\definecolor{darkcyan}{rgb}{0,0.6,0.6}
+\definecolor{darkorange}{rgb}{0.8,0.2,0}
+\definecolor{newcolor}{rgb}{0, 0, .90}
+\definecolor{impcolor}{rgb}{.90, 0, 0}
+\definecolor{darkergreen}{rgb}{0,0.5,0}
+\definecolor{myorange}{rgb}{0.8,0.7,0}
+\definecolor{myviolet}{rgb}{0.7,0.0,0.7}
+\definecolor{lightgray}{rgb}{0.8,0.8,0.8}
+\definecolor{lightgrey}{rgb}{0.8,0.8,0.8}
+\definecolor{darkred}{rgb}{0.5,0,0}
+\definecolor{lightred}{rgb}{1,0.8,0.8}
+\definecolor{lightgreen}{rgb}{0.7,1,0.7}
+\definecolor{darkblue}{rgb}{0,0,0.5}
+
+\definecolor{notsodarkgreen}{rgb}{0,0.7,0}
+\colorlet{colorb}{blue}
+\colorlet{colora1}{yellow}
+\colorlet{colora0}{green}
+\colorlet{colora1font}{darkyellow}
+\colorlet{colora0font}{darkgreen}
+
+\colorlet{exanswer}{blue}
+\colorlet{colorgray}{lightgray}
+
+\definecolor{colortitle}{rgb}{0.54,0.8,0.9}
+
+%\definecolor{coloract}{rgb}{0,1,0}
+%\definecolor{colorinh}{rgb}{1,0,0}
+\colorlet{coloract}{darkgreen}
+\colorlet{colorinh}{red}
+\colorlet{coloractgray}{lightgreen}
+\colorlet{colorinhgray}{lightred}
+\colorlet{colorinf}{darkgray}
+\colorlet{coloractgray}{lightgreen}
+\colorlet{colorinhgray}{lightred}
+\colorlet{light}{gray}
+
+
+\definecolor{lightpurple}{rgb}{0.83,0.27,1}
+\definecolor{lightblue}{rgb}{0.27,0.9,0.9}
+
+%\definecolor{coloract}{rgb}{0,1,0}
+%\definecolor{colorinh}{rgb}{1,0,0}
+\colorlet{coloract}{darkgreen}
+\colorlet{colorinh}{red}
+
+\colorlet{couleurtheme}{darkblue}  % Couleur principale du th√®me
+\usecolortheme[named=couleurtheme]{structure}    % Couleur de la structure : titres et puces
+%\setbeamercolor{normal text}{bg=black,fg=white}  % Couleur du texte
+\setbeamercolor{item}{fg=couleurtheme}           % Couleur des puces
+\newcommand{\f}{\textcolor{couleurtheme}{\textbf{$\rightarrow$\ }}}
+
+\tikzstyle{grn}=[every node/.style={circle,draw=black,outer sep=2pt,minimum
+                size=15pt,text=black}, node distance=1.5cm]
+\tikzstyle{inh}=[>=|,-|,draw=colorinh,thick, text=black,label]
+\tikzstyle{act}=[->,>=triangle 60,draw=coloract,thick,color=coloract]
+\tikzstyle{inhgray}=[>=|,-|,draw=colorinhgray,thick, text=black,label]
+\tikzstyle{actgray}=[->,>=triangle 60,draw=coloractgray,thick,color=coloractgray]
+\tikzstyle{inf}=[->,draw=colorinf,thick,color=colorinf]
+%\tikzstyle{elabel}=[fill=none, above=-1pt, sloped,text=black, minimum size=10pt, outer sep=0, font=\scriptsize,draw=none]
+\tikzstyle{elabel}=[fill=none,text=black, above=-2pt,%sloped,
+minimum size=10pt, outer sep=0, font=\scriptsize, draw=none]
+%\tikzstyle{elabel}=[]
+
+
+\tikzstyle{plot}=[every path/.style={-}]
+\tikzstyle{axe}=[gray,->,>=stealth']
+\tikzstyle{ticks}=[font=\scriptsize,every node/.style={gray}]
+\tikzstyle{mean}=[thick]
+\tikzstyle{interval}=[line width=5pt,red,draw opacity=0.7]
+\definecolor{lightred}{rgb}{1,0.3,0.3}
+
+\tikzstyle{hl}=[yellow]
+\tikzstyle{hl2}=[orange]
+
+\tikzstyle{every matrix}=[ampersand replacement=\&]
+\tikzstyle{shorthandoff}=[]
+\tikzstyle{shorthandon}=[]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Environnement liste avec fl√®ches
+\newenvironment{fleches}{%
+\begin{list}{}{%
+\setlength{\labelwidth}{1em}% largeur de la bo√Æte englobant le label
+\setlength{\labelsep}{0pt}% espace entre paragraphe et l‚Äô√©tiquette
+%\setlength{\itemsep}{1pt}
+%\setlength{\leftmargin}{\labelwidth+\labelsep}% marge de gauche
+\renewcommand{\makelabel}{\f}%
+}}{\end{list}}
+
+% Liste sans puce
+\newenvironment{liste}{%
+\begin{list}{}{%
+\setlength{\labelwidth}{0em}% largeur de la bo√Æte englobant le label
+\setlength{\labelsep}{0pt}% espace entre paragraphe et l‚Äô√©tiquette
+\setlength{\leftmargin}{0em}% marge de gauche
+%\renewcommand{\makelabel}{\f}%
+}}{\end{list}}
+
+
+\newcommand{\texthl}[1]{{\color{red}#1}}
+\newcommand{\jaune}[1]{{\color{red}#1}}
+\newcommand{\texthlb}[1]{{\color{orange}#1}}
+\newcommand{\orange}[1]{{\color{orange}#1}}
+\newcommand{\verte}[1]{{\color{green}#1}}
+\newcommand{\trad}{{\color{orange}{\bf $\leadsto$}}}
+
+\newcommand{\textcite}[1]{{\color{myviolet}[#1]}}
+\newcommand{\textciten}[1]{{\color{myviolet}#1}}
+\newcommand{\tscite}[1]{\textcolor{couleurcit}{#1}}
+%\newcommand{\tcite}[1]{\textcolor{couleurcit}{[#1]}}
+\newcommand{\tcite}[1]{\textcolor{couleurcit}{[#1]}}
+
+% Un vrai symbole pour l'ensemble vide
+\renewcommand{\emptyset}{\varnothing}
+
+% Pour d√©finir la conf√©rence et son nom court
+\newcommand{\conference}[2]{\def\theconference{#2}
+\def\insertshortconference{\ifthenelse{\equal{#1}{-}}{#2}{\ifthenelse{\equal{#1}{}}{#2}{#1}}}}
+
+
+\newcommand{\New}[1]{\textcolor{newcolor}{#1}}
+\newcommand{\Imp}[1]{\textcolor{impcolor}{#1}}
+\newcommand{\setpns}{\textsl{Scheduling}-TPNs}
+\newcommand{\ptpns}{\textsl{Preemptive}-TPNs}
+\newcommand{\fihtpns}{FIHTPNs}
+\newcommand{\setpn}{\textsl{Scheduling}-TPN}
+\newcommand{\ptpn}{\textsl{Preemptive}-TPN}
+\newcommand{\fihtpn}{FIHTPN}
+\newcommand{\post}[1]{\mbox{${#1}^\bullet$}}
+\newcommand{\pre}[1]{\mbox{$^\bullet\! #1$}}
+\newcommand{\prefl}[1]{\ifmmode^{\diamond}\mspace{-2mu}#1\else$^{\bullet}\!\!#1$\fi}
+%\newcommand{\ie}{\emph{i.e.}\xspace}
+\newcommand{\To}[1]{\stackrel{#1}{\rightarrow}}
+\newcommand{\setN}{\mathbb N} % ‡ utiliser en mode math{\'e}matique
+\newcommand{\setR}{\mathbb R} % ‡ utiliser en mode math{\'e}matique
+\newcommand{\setB}{\mathbb B} % ‡ utiliser en mode math{\'e}matique
+\newcommand{\setZ}{\mathbb Z} % ‡ utiliser en mode math{\'e}matique
+\newcommand{\setQ}{\mathbb Q} % ‡ utiliser en mode math{\'e}matique
+\newcommand{\montilde}{$\sim$}
+\newcommand{\tval}[1]{\textbf{#1}}
+
+
+\def \PH {\mathcal{PH}}
+\def \PHb {\overline{\PH}}
+\def \Hits {\mathcal{H}}
+\def \GRN {\mathcal{G}}
+\newcommand{\hitp}[2]{\mbox{$#1\rightarrow#2$}}
+\newcommand{\hitb}[2]{\mbox{$#1\Rsh#2$}}
+\newcommand{\hits}[3]{\mbox{$#1\xrightarrow{#3}#2$}}
+\newcommand{\hitpath}[4]{\mbox{$#2\xrightarrow{#1}^*#3\Rsh#4$}}
+\newcommand{\hit}[3]{\mbox{$#1\rightarrow#2\Rsh#3$}}
+
+\colorlet{couleurcit}{gray}  % Couleur des citations
+\colorlet{couleurex}{blue}  % Couleur des citations
+\newcommand{\ex}[1]{\textcolor{couleurex}{#1}}
+\newcommand{\qex}[1]{\quad \ex{#1}}
+\newcommand{\rex}[1]{\hfill \ex{#1}}
+\newcommand{\redex}[1]{\textcolor{red}{#1}}
+\def \scaleex {0.85}
+\def \scaleinf {0.6}
+\colorlet{colorgray}{lightgray}
+
+\newtheorem{condition}{Condition}
+
+\title[5th JFLI-LRI-NII workshop]%
+{\textbf{Towards the analysis and inference of large biological models} 
+}
+
+\author[M. \sc Magnin]%
+{Maxime \textsc{Folschette}, Morgan \textsc{Magnin} \\
+\texttt{maxime.folschette} $\vert$ \texttt{morgan.magnin @irccyn.ec-nantes.fr} \\
+\textbf{Joint work with:} 
+K.Inoue, L. PaulevÈ, O. Roux 
+}
+\institute[IRCCyN]{
+\structure{
+…cole Centrale de Nantes - IRCCyN -  \textit{MeForBio team} 
+}
+
+}
+%
+\date[2013/10/10]{5th JFLI-LRI-NII workshop - 2013/10/10}
+
+%\date[] % (optional)
+%{}
+
+\subject{5th JFLI-LRI-NII workshop - 2013/10/10}
+
+\AtBeginSection[] % Do nothing for \section*
+{ 
+\frame<beamer> 
+	{ 
+	\frametitle{Overview} 
+	\tableofcontents[current]
+	} 
+}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\frame{\tableofcontents}
+
+\input{parts/ex.tex}
+
+\section{Introduction}
+\input{parts/introduction.tex}
+\section{Modeling biological regulatory networks: Thomas' framework}
+\input{parts/def_thomas.tex}
+
+\section[Process Hitting]{The Process Hitting: a framework well suited to concurrent systems}
+\subsection{Definition}
+\input{parts/def_ph.tex}
+\subsection{From biological models to Process Hitting and refining}
+\input{parts/bio_2_ph.tex}
+\subsection{Tool for analyzing Process Hitting: pint}
+\input{parts/ph_pint.tex}
+\section[Information inference]{Inferring information on the biological model thanks to the Process Hitting}
+\input{parts/inf.tex}
+\subsection{Interaction Graph Inference}
+\input{parts/inf_ig.tex}
+\subsection{Parametrization Inference}
+\input{parts/inf_param.tex}
+\section{Summary \& Conclusion}
+\input{parts/ccl.tex}
+\appendix
+
+% On veut un style <<alpha>>
+\bibliography{biblio}
+\bibliographystyle{alpha}
+
+\end{document}

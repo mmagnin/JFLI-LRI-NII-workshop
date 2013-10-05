@@ -1,0 +1,130 @@
+% Inférence du Graphe des Interactions
+
+
+
+\begin{frame}
+  \frametitle{Inferring the Interaction Graph}
+  \framesubtitle{\cite{Folschette2012}}
+
+\begin{columns}
+\begin{column}{0.65\textwidth}
+
+\begin{center}\scalebox{\scaleinf}{
+\only<3->{\vspace{-5em}}
+\begin{tikzpicture}
+  \scalebox{0.8}{
+\path[use as bounding box] (-0.5,-0.8) rectangle (6.5,2.8);
+\exphinf
+
+% Processus marqués
+\only<4-9>{\node[current process,fill=colorb] (hb_0) at (b_0.center) {};}
+\only<5-9>{
+  \node[current process,fill=colora1] (ha_1) at (a_1.center) {};
+  \node[current process,fill=colora1] (hab_2) at (ab_2.center) {};}
+\only<6-9>{
+  \node[current process,fill=colora1] (hz_2) at (z_2.center) {};}
+\only<7-9>{
+  \node[current process,fill=colora0] (ha_0) at (a_0.center) {};
+  \node[current process,fill=colora0] (hab_0) at (ab_0.center) {};}
+\only<8-9>{
+  \node[current process,fill=colora0] (hz_0) at (z_0.center) {};}
+
+\only<10->{\node[current process,fill=colorb] (hb_1) at (b_1.center) {};}
+\only<10->{
+  \node[current process,fill=colora1] (ha_1) at (a_1.center) {};
+  \node[current process,fill=colora1] (hab_3) at (ab_3.center) {};
+  \node[current process,fill=colora0] (ha_0) at (a_0.center) {};
+  \node[current process,fill=colora0] (hab_1) at (ab_1.center) {};}
+\only<11->{
+  \node[current process,fill=colora1] (hz_1) at (z_1.center) {};
+  \node[current process,fill=colora0,inner sep=0,minimum size=7pt,draw=none] (hz_1bis) at (z_1.center) {};}
+
+% Actions mises en valeur
+\only<5-6>{
+  \THit{ab_2}{}{z_1}{.north west}{z_2}
+  \THit{ab_2}{}{z_0}{.west}{z_1}
+  \path[bounce,bend left] \TBounce{z_1}{}{z_2}{.south} \TBounce{z_0}{}{z_1}{.south} ;}
+\only<7-8>{
+  \THit{ab_0}{}{z_2}{.west}{z_1}
+  \THit{ab_0}{}{z_1}{.south west}{z_0}
+  \path[bounce,bend right] \TBounce{z_2}{}{z_1}{.north} \TBounce{z_1}{}{z_0}{.north} ;}
+\only<10->{
+  \THit{ab_3}{}{z_2}{.west}{z_1}
+  \THit{ab_3}{}{z_0}{.west}{z_1}
+  \THit{ab_1}{}{z_2}{.west}{z_1}
+  \THit{ab_1}{}{z_0}{.west}{z_1}
+  \path[bounce,bend left] \TBounce{z_2}{bend right}{z_1}{.north} \TBounce{z_0}{}{z_1}{.south} ;}
+}
+\end{tikzpicture}
+}\end{center}
+
+\end{column}
+\begin{column}{0.45\textwidth}
+
+\begin{center}
+\begin{tikzpicture}[grn]
+\path[use as bounding box] (1,-0.5) rectangle (2.5,1.5);
+% Gènes noirs
+\only<1->{\node[inner sep=0] (a) at (0,1.5) {a};}
+\only<1-3>{\node[inner sep=0] (b) at (0,0) {b};}
+\only<1->{\node[inner sep=0] (z) at (2,0.75) {z};}
+%\only<1-2>{\path node[elabel, below=-1em of a] {$0..1$}; \path node[elabel, below=-1em of b] {$0..1$}; \path node[elabel, below=-1em of z] {$0..2$};}
+% Gènes gris
+%\only<3>{\node[colorgray,inner sep=0] (a) at (0,1.5) {a};}
+\only<4->{\node[colorgray,inner sep=0] (b) at (0,0) {b};}
+
+%\newcolumntype{M}[1]{>{\raggedright}m{#1}}
+
+% Arc noir
+\only<2-12>{\path (a) edge[inf] node[elabel,above right=-2.4em,font=\scriptsize] {\begin{tabular*}{3cm}{c}%
+$\color{white}\left\{\color{black}\text{\begin{tabular*}{1.7cm}{l}%
+  $\only<10->{\{b = 1\} \only<15>{\phantom{\Rightarrow \sim}}\only<12->{\Rightarrow {\color{exanswer}\sim}}}$\tabularnewline%
+  $\only<4->{\{b = 0\} \only<9->{\Rightarrow {\color{exanswer}1+}}}$%
+\end{tabular*}}\only<-16>{\right.}\only<17->{\right\}\textcolor{exanswer}{1+}}$%
+\end{tabular*}} (z) ;}
+\only<2-3>{\path (b) edge[inf] node[elabel, below=-2pt] {$\only<99->{-\!\only<1->{1}}$} (z) ;}
+% Arc coloré
+\only<13->{\path (a) edge[act,very thick,notsodarkgreen] node[elabel,above right=-2.4em,font=\scriptsize] {\begin{tabular*}{3cm}{c}%
+$\color{white}\left\{\color{black}\text{\begin{tabular*}{1.7cm}{l}%
+  $\only<10->{\{b = 1\} \only<11>{\phantom{\Rightarrow \sim}}\only<12->{\Rightarrow {\color{exanswer}\sim}}}$\tabularnewline%
+  $\only<4->{\{b = 0\} \only<9->{\Rightarrow {\color{exanswer}1+}}}$%
+\end{tabular*}}\only<13->{\right\}\textcolor{exanswer}{1+}}$%
+\end{tabular*}} (z) ;}
+% Arcs gris
+%\only<3>{\path (a) edge[inf,draw=colorgray,fill=colorgray] node[colorgray,elabel, above=-2pt] {$\only<1>{+\!\only<2->{1}}$} (z) ;}
+\only<4->{\path (b) edge[inf,draw=colorgray,fill=colorgray] node[colorgray,elabel, below=-2pt] {$\only<1>{-\!\only<1->{1}}$} (z) ;}
+\end{tikzpicture}
+\end{center}
+
+\end{column}
+\end{columns}
+
+\bigskip
+
+% Méthode
+\only<3-13>{
+\f \tval{Exhaustive search in all possible configurations}
+
+\pause
+\begin{enumerate}[1.]
+  \item Pick one regulator [\ex{$a$}], and choose an active process for all the others [\ex{$b_0$}].
+\pause
+  \item Change the active process of this regulator [\ex{$a_0$}, \ex{$a_1$}] and watch the \tval{focal processes}.
+\pause[9]
+  \item Conclude locally: ($\textcolor{colora0font}{a_0} \Rsh \textcolor{colora1font}{a_1} \Rightarrow \textcolor{colora0font}{z_0} \Rsh \textcolor{colora1font}{z_2}$)
+      $\Rightarrow \text{activation (}\textcolor{exanswer}{+}\text{) \& threshold = \ex{$1$}}$.
+\pause
+  \item Iterate \only<13->{and conclude globally.}
+\end{enumerate}
+}
+
+\only<14->{
+\smallskip
+\textbf{Problematic cases}:\\
+\smallskip
+$\left.\text{\begin{tabular}{l}
+  \f No focal processes (\textbf{cycle})\\
+  \f Opposite influences (\ex{$+$} \& \ex{$-$})
+ \end{tabular}}\right\} \Rightarrow \text{\textbf{Unsigned edge}}$
+ }
+\end{frame}

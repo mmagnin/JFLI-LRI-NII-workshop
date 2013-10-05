@@ -1,0 +1,460 @@
+%% Application aux réseaux de régulation biologique
+%
+%\subsection{Presentation of Interaction Graphs}
+%
+%\begin{frame}
+%  \frametitle{Application to Biological Systems}
+%
+%\bigskip
+%\tval{The Process Hitting framework}:
+%\begin{itemize}
+%  \item new formalism with simple elements
+%  \item dynamic modeling
+%  \item efficient reachability checking
+%  \item general framework that could be applied to...
+%\end{itemize}
+%
+%\bigskip
+%\tval{Biological systems}:
+%\begin{itemize}
+%  \item gene/protein couples
+%  \item Thomas' Modeling: Interaction Graphs
+%  \item hard to study \f use Process Hitting
+%\end{itemize}
+%
+%\end{frame}
+%
+%
+%
+%\begin{frame}
+%  \frametitle{Interaction Graphs}
+%
+%\begin{columns}
+%\begin{column}{0.5\textwidth}
+%
+%\medskip
+%\begin{itemize}
+%  \item Nodes = Genes
+%  \item Directed edges = Interactions
+%\end{itemize}
+%
+%\end{column}
+%\begin{column}{0.5\textwidth}
+%
+%\begin{flushright}
+%\scalebox{1.2}{
+%\begin{tikzpicture}[grn,node distance=2cm]
+%\path[use as bounding box] (-0.6,-1) rectangle (2.3,0.5);
+%\node(a) {a};
+%\node(b) [right of=a] {b};
+%\path
+%  (a) edge[inh, bend left] node[elabel, above] {$-2$} (b)
+%  (b) edge[inh, bend left] node[elabel, below=-2pt] {$-1$} (a)
+%  (a) edge[act,loop left=10] node[elabel, left] {$+1$} (a);
+%\path
+%  node[elabel, below=-1em of a] {$0..2$}
+%  node[elabel, below=-10pt of b] {$0..1$};
+%%\node (ba) [elabel,below of=a,below=-2pt] {$0..2$} (a);
+%%\node (bb) [elabel,below of=b] {$0..1$};
+%\end{tikzpicture}
+%}
+%
+%+ Parametrization \quad~
+%\end{flushright}
+%
+%\end{column}
+%\end{columns}
+%
+%\bigskip
+%
+%\only<2>{
+%\Large
+%\begin{flushright}
+%\textcolor{couleurtheme}{State Graphs}\hspace{2em}~\!\!
+%\end{flushright}
+%\normalsize
+%
+%\begin{columns}
+%\begin{column}{0.4\textwidth}
+%
+%\begin{itemize}
+%  \item One level at a time
+%  \item Asynchronous
+%\end{itemize}
+%
+%\end{column}
+%\begin{column}{0.6\textwidth}
+%
+%\begin{flushright}
+%\begin{tikzpicture}
+%\path[use as bounding box] (0,-2) rectangle (6,-0.5);
+%\matrix at (0,0) [anchor=north west,column sep=.8cm, row sep=.8cm]
+%{
+%\node (s01) {$\PHetat{a_0,b_1}$}; \&
+%\node (s11) {$\PHetat{a_1,b_1}$}; \&
+%\node (s21) {$\PHetat{a_2,b_1}$}; \\
+%\node (s00) {$\PHetat{a_0,b_0}$}; \&
+%\node (s10) {$\PHetat{a_1,b_0}$}; \&
+%\node (s20) {$\PHetat{a_2,b_0}$}; \\
+%};
+%\path[->]
+%    (s00) edge (s10) edge (s01)
+%    (s10) edge (s11) edge (s20)
+%    (s21) edge (s11) edge (s20)
+%;
+%\end{tikzpicture}
+%\end{flushright}
+%
+%\end{column}
+%\end{columns}
+%
+%\bigskip
+%Exponential number of states w.r.t.~the number of genes
+%}
+%\end{frame}
+%
+
+%\subsection{Translation from Thomas' framework to Process Hitting \& Refining}
+
+\begin{frame}
+  \frametitle{Translation of the Generalized Dynamics}
+
+\begin{center}
+Positive interaction:
+\end{center}
+\begin{columns}
+\begin{column}{0.45\textwidth}
+
+\begin{center}
+\begin{tikzpicture}[grn,node distance=2cm]
+\path[use as bounding box] (-0.8,-.5) rectangle (2.5,0.6);
+\node (a) {a};
+\node (b) [right of=a] {b};
+\path (a) edge[act, bend left] node[elabel, above] {$+1$} (b);
+\end{tikzpicture}
+\end{center}
+
+\end{column}
+\begin{column}{0.05\textwidth}
+
+\begin{flushright}
+\medskip
+\Large
+\f
+\normalsize
+\end{flushright}
+
+\end{column}
+\begin{column}{0.5\textwidth}
+
+\begin{center}
+\scalebox{0.8}{
+\begin{tikzpicture}
+\path[use as bounding box] (-1,0) rectangle (5,1.5);
+\TSort{(0,0.5)}{a}{2}{l}
+\TSort{(4,0)}{b}{3}{r}
+
+\only<2>{
+\THit{a_1}{}{b_0}{.west}{b_1}
+\THit{a_1}{}{b_1}{.west}{b_2}
+\path[bounce,bend left]
+\TBounce{b_0}{}{b_1}{.south west}
+\TBounce{b_1}{}{b_2}{.south west};
+}
+
+\only<3->{
+\THit{a_1}{ulhit}{b_0}{.west}{b_1}
+\THit{a_1}{ulhit}{b_1}{.west}{b_2}
+\path[bounce,bend left,pulhit]
+\TBounce{b_0}{bulhit}{b_1}{.south west}
+\TBounce{b_1}{bulhit}{b_2}{.south west};
+\THit{a_0}{}{b_2}{.west}{b_1}
+\THit{a_0}{}{b_1}{.west}{b_0}
+\path[bounce,bend right]
+\TBounce{b_2}{}{b_1}{.north west}
+\TBounce{b_1}{}{b_0}{.north west};
+}
+
+\end{tikzpicture}
+}
+\end{center}
+
+\end{column}
+\end{columns}
+
+\bigskip
+\only<4->{
+\begin{center}
+Negative interaction:
+\end{center}
+\begin{columns}
+\begin{column}{0.45\textwidth}
+
+\begin{center}
+\begin{tikzpicture}[grn,node distance=2cm]
+\path[use as bounding box] (-0.8,-.5) rectangle (2.5,0.6);
+\node (a) {a};
+\node (b) [right of=a] {b};
+\path (a) edge[inh, bend left] node[elabel, above] {$-1$} (b);
+\end{tikzpicture}
+\end{center}
+
+\end{column}
+\begin{column}{0.05\textwidth}
+
+\begin{flushright}
+\medskip
+\Large
+\f
+\normalsize
+\end{flushright}
+
+\end{column}
+\begin{column}{0.5\textwidth}
+
+\begin{center}
+\scalebox{0.8}{
+\begin{tikzpicture}
+\path[use as bounding box] (-1,0) rectangle (5,1.5);
+\TSort{(0,0.5)}{a}{2}{l}
+\TSort{(4,0)}{b}{3}{r}
+
+\only<5>{
+\THit{a_1}{}{b_2}{.west}{b_1}
+\THit{a_1}{}{b_1}{.west}{b_0}
+\path[bounce,bend right]
+\TBounce{b_2}{}{b_1}{.north west}
+\TBounce{b_1}{}{b_0}{.north west};
+}
+
+\only<6>{
+\THit{a_1}{ulhit}{b_2}{.west}{b_1}
+\THit{a_1}{ulhit}{b_1}{.west}{b_0}
+\path[bounce,bend right,pulhit]
+\TBounce{b_2}{bulhit}{b_1}{.north west}
+\TBounce{b_1}{bulhit}{b_0}{.north west};
+\THit{a_0}{}{b_0}{.west}{b_1}
+\THit{a_0}{}{b_1}{.west}{b_2}
+\path[bounce,bend left]
+\TBounce{b_0}{}{b_1}{.south west}
+\TBounce{b_1}{}{b_2}{.south west};
+}
+
+\end{tikzpicture}
+}
+\end{center}
+
+\end{column}
+\end{columns}
+}
+
+\end{frame}
+
+
+
+%\begin{frame}
+%  \frametitle{Refining with Actions Removal}
+%
+%\bigskip
+%Prevent behaviors by deleting \tval{unrealistic actions}
+%
+%\bigskip
+%\begin{center}
+%\begin{tikzpicture}
+%%\path[use as bounding box] (-1,0) rectangle (5,3);
+%\TSort{(0,0.5)}{a}{2}{l}
+%\TSort{(4,0)}{b}{3}{r}
+%
+%\THit{a_0}{ulhit}{b_2}{.west}{b_1}
+%\THit{a_0}{ulhit}{b_1}{.west}{b_0}
+%\path[bounce,bend right,pulhit]
+%\TBounce{b_2}{bulhit}{b_1}{.north west};
+%\path[bounce,bend right,pulhit]
+%\TBounce{b_1}{bulhit}{b_0}{.north west};
+%\THit{a_1}{}{b_0}{.west}{b_1}
+%\path[bounce,bend left]
+%\TBounce{b_0}{}{b_1}{.south west};
+%
+%\only<1>{
+%\THit{a_1}{}{b_1}{.west}{b_2}
+%\path[bounce,bend left]
+%\TBounce{b_1}{}{b_2}{.south west};
+%}
+%
+%\only<2>{
+%\THit{a_1}{draw=red,fill=red}{b_1}{.west}{b_2}
+%\path[bend left,bounce,fill=red]
+%\TBounce{b_1}{draw=red}{b_2}{.south west};
+%}
+%
+%\only<3>{}
+%
+%\end{tikzpicture}
+%\end{center}
+%
+%\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Refining with Cooperation}
+
+Allow \tval{cooperation} between two genes
+\begin{itemize}
+  \item How to express \ex{$\PHfrappe{(a_1 \wedge b_1)}{z_0}{z_1}$}?
+%  \item TTT
+\end{itemize}
+\begin{fleches}
+  \item Add a \textbf{cooperative sort} reflecting the state of $a$ and $b$
+\end{fleches}
+
+\begin{center}
+\scalebox{0.8}{
+\begin{tikzpicture}
+%\path[use as bounding box] (-1,0) rectangle (5,3);
+\TSort{(0,3.5)}{a}{2}{l}
+\TSort{(0,0.5)}{b}{2}{l}
+\TSort{(8,2)}{z}{2}{r}
+\only<2->{
+\TSetTick{ab}{0}{00}
+\TSetTick{ab}{1}{01}
+\TSetTick{ab}{2}{10}
+\TSetTick{ab}{3}{11}
+\TSort{(4,1)}{ab}{4}{r}
+}
+
+\only<1>{
+\THit{a_1}{}{z_0}{.west}{z_1}
+\THit{b_1}{}{z_0}{.west}{z_1}
+\path[bounce,bend left]
+\TBounce{z_0}{}{z_1}{.south west};
+}
+
+\only<3>{
+\THit{a_1}{}{ab_0}{.west}{ab_2}
+\THit{a_1}{}{ab_1}{.west}{ab_3}
+\path[bounce,bend left]
+\TBounce{ab_0}{}{ab_2}{.south west}
+\TBounce{ab_1}{}{ab_3}{.south west};
+}
+
+\only<4->{
+\THit{a_1}{ulhit}{ab_0}{.west}{ab_2}
+\THit{a_1}{ulhit}{ab_1}{.west}{ab_3}
+\path[bounce,bend left,pulhit]
+\TBounce{ab_0}{bulhit}{ab_2}{.south west}
+\TBounce{ab_1}{bulhit}{ab_3}{.south west};
+}
+\only<4>{
+\THit{a_0}{}{ab_2}{.west}{ab_0}
+\THit{a_0}{}{ab_3}{.west}{ab_1}
+\path[bounce,bend right]
+\TBounce{ab_2}{}{ab_0}{.north west}
+\TBounce{ab_3}{}{ab_1}{.north west};
+}
+
+\only<5->{
+\THit{a_0}{ulhit}{ab_2}{.west}{ab_0}
+\THit{a_0}{ulhit}{ab_3}{.west}{ab_1}
+\path[bounce,bend right,pulhit]
+\TBounce{ab_2}{bulhit}{ab_0}{.north west}
+\TBounce{ab_3}{bulhit}{ab_1}{.north west};
+}
+\only<5>{
+\THit{b_1}{}{ab_0}{.west}{ab_1}
+\THit{b_1}{}{ab_2}{.west}{ab_3}
+\path[bounce,bend left]
+\TBounce{ab_0}{}{ab_1}{.south west}
+\TBounce{ab_2}{}{ab_3}{.south west};
+}
+
+\only<6->{
+\THit{b_1}{ulhit}{ab_0}{.west}{ab_1}
+\THit{b_1}{ulhit}{ab_2}{.west}{ab_3}
+\path[bounce,bend left,pulhit]
+\TBounce{ab_0}{bulhit}{ab_1}{.south west}
+\TBounce{ab_2}{bulhit}{ab_3}{.south west};
+}
+\only<6>{
+\THit{b_0}{}{ab_1}{.west}{ab_0}
+\THit{b_0}{}{ab_3}{.west}{ab_2}
+\path[bounce,bend right]
+\TBounce{ab_1}{}{ab_0}{.north west}
+\TBounce{ab_3}{}{ab_2}{.north west};
+}
+
+\only<7->{
+\THit{b_0}{ulhit}{ab_1}{.west}{ab_0}
+\THit{b_0}{ulhit}{ab_3}{.west}{ab_2}
+\path[bounce,bend right,pulhit]
+\TBounce{ab_1}{bulhit}{ab_0}{.north west}
+\TBounce{ab_3}{bulhit}{ab_2}{.north west};
+\THit{ab_3}{}{z_0}{.west}{z_1}
+\path[bounce,bend left]
+\TBounce{z_0}{}{z_1}{.south west};
+}
+
+\end{tikzpicture}
+}
+\end{center}
+\only<8>{
+\begin{fleches}
+\item Introduces a temporal shift (over-approximation)
+\end{fleches}
+}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Using Process Hitting for\\Interaction Graphs Study}
+
+\begin{block}{Motivation}
+\begin{itemize}
+  \item Interaction Graph is the \textbf{historical discrete model} (suitable and widespread in biological research) 
+  \item Several tools exist of the analysis of interaction graphs, but the \textbf{state graph} is needed for some results $\Rightarrow$ \textbf{combinatorial explosion}
+\end{itemize}  
+\end{block}
+
+\begin{block}{Contribution: Process Hitting to study large Biological Regulatory Networks}
+\begin{itemize}
+  \item Translation from Interaction Graphs + Refining
+  \item \tval{Efficient static analysis}
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\begin{frame}[c]
+  \frametitle{The Process Hitting modeling}
+
+\begin{block}{Key features} 
+\begin{itemize}
+  \item \tval{Dynamic} modeling with an \tval{atomistic} point of view
+  \begin{fleches}
+    \item Independent actions
+    \item Cooperation modeled with cooperative sorts
+  \end{fleches}
+
+  \item Efficient \tval{static analysis}
+  \begin{fleches}
+    \item Reachability of a process can be computed in \tval{linear time}\\
+          \quad in the number of sorts
+  \end{fleches}
+
+  \item Useful for the study of \tval{large biological models}
+  \begin{fleches}
+    \item Up to hundreds of sorts
+  \end{fleches}
+
+  \end{itemize}
+\end{block}
+
+\begin{alertblock}{(Future) extensions} 
+  \begin{itemize}
+    \item Actions with stochasticity
+    \item Actions with priorities
+    \item Continuous time with clocks?
+  \end{itemize}
+\end{alertblock}
+
+\end{frame}
