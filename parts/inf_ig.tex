@@ -77,7 +77,7 @@
 
 % Arc noir
 \only<2-12>{\path (a) edge[inf] node[elabel,above right=-2.4em,font=\scriptsize] {\begin{tabular*}{3cm}{c}%
-$\color{white}\left\{\color{black}\text{\begin{tabular*}{1.7cm}{l}%
+$\color{white}\left.\color{black}\text{\begin{tabular*}{2.1cm}{l}%
   $\only<10->{\{b = 1\} \only<15>{\phantom{\Rightarrow \sim}}\only<12->{\Rightarrow {\color{exanswer}\sim}}}$\tabularnewline%
   $\only<4->{\{b = 0\} \only<9->{\Rightarrow {\color{exanswer}1+}}}$%
 \end{tabular*}}\only<-16>{\right.}\only<17->{\right\}\textcolor{exanswer}{1+}}$%
@@ -85,7 +85,7 @@ $\color{white}\left\{\color{black}\text{\begin{tabular*}{1.7cm}{l}%
 \only<2-3>{\path (b) edge[inf] node[elabel, below=-2pt] {$\only<99->{-\!\only<1->{1}}$} (z) ;}
 % Arc coloré
 \only<13->{\path (a) edge[act,very thick,notsodarkgreen] node[elabel,above right=-2.4em,font=\scriptsize] {\begin{tabular*}{3cm}{c}%
-$\color{white}\left\{\color{black}\text{\begin{tabular*}{1.7cm}{l}%
+$\color{white}\left.\color{black}\text{\begin{tabular*}{2.1cm}{l}%
   $\only<10->{\{b = 1\} \only<11>{\phantom{\Rightarrow \sim}}\only<12->{\Rightarrow {\color{exanswer}\sim}}}$\tabularnewline%
   $\only<4->{\{b = 0\} \only<9->{\Rightarrow {\color{exanswer}1+}}}$%
 \end{tabular*}}\only<13->{\right\}\textcolor{exanswer}{1+}}$%
@@ -111,10 +111,10 @@ $\color{white}\left\{\color{black}\text{\begin{tabular*}{1.7cm}{l}%
 \pause
   \item Change the active process of this regulator [\ex{$a_0$}, \ex{$a_1$}] and watch the \tval{focal processes}.
 \pause[9]
-  \item Conclude locally: ($\textcolor{colora0font}{a_0} \Rsh \textcolor{colora1font}{a_1} \Rightarrow \textcolor{colora0font}{z_0} \Rsh \textcolor{colora1font}{z_2}$)
-      $\Rightarrow \text{activation (}\textcolor{exanswer}{+}\text{) \& threshold = \ex{$1$}}$.
+  \item Conclude locally: ($\textcolor{colora0font}{a_0} \Rsh \textcolor{colora1font}{a_1} \Rightarrow \textcolor{colora0font}{z_0} \Rsh \textcolor{colora1font}{z_2}$)\\
+      \quad $\Rightarrow \text{activation (}\textcolor{exanswer}{+}\text{) \& threshold = \ex{$1$}}$.
 \pause
-  \item Iterate \only<13->{and conclude globally.}
+  \item Iterate \pause[13]and conclude globally.
 \end{enumerate}
 }
 
