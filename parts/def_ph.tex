@@ -411,7 +411,7 @@ denoted & & \texthl{$\hit{a_i}{b_j}{b_k}$} (hit and bounce)\\
 
 \begin{frame}[t]
   \frametitle{The Process Hitting modeling}
-%  \framesubtitle{\tcite{PMR12-MSCS}}
+%  \framesubtitle{\cite{PMR10-TCSB}}
 
 % 1 : Sortes
 \only<1>{
@@ -508,16 +508,15 @@ denoted & & \texthl{$\hit{a_i}{b_j}{b_k}$} (hit and bounce)\\
 }\end{center}
 
 \medskip
-\only<-14>{
 \begin{liste}
-  \item How to introduce some \tval{cooperation} between sorts? \qex{$\PHfrappe{a_1 \wedge b_0}{z_1}{z_2}$}
+  \item How to introduce some \tval{cooperation} between sorts? \qex{$\PHfrappe{\underline{a_1 \wedge b_0}}{z_1}{z_2}$}
 \pause[4]
-  \item Solution: a \tval{cooperative sort} \qex{$ab$} \only<12->{\quad to express \qex{$a_1 \wedge b_0$}}
+  \item Solution: a \tval{cooperative sort} \qex{$ab$} \pause[12]\quad to express \qex{$\underline{a_1 \wedge b_0}$}
 \pause[8]
-  \item Constraint: each configuration is represented by one process \qex{$\PHetat{a_1,b_0} \pause[11]\Rightarrow ab_{10}$}
+  \item Constraint: represent each configuration \qex{$\PHetat{\underline{a_1,b_0}} \pause[11]\Rightarrow ab_{10}$}
 \pause[14]
   \item Advantage: regular sort; drawbacks: complexity, temporal shift
-\end{liste}}
+\end{liste}
 \end{frame}
 
 
@@ -532,7 +531,7 @@ denoted & & \texthl{$\hit{a_i}{b_j}{b_k}$} (hit and bounce)\\
 \begin{fleches}
   \item avoid couples of processes bounded by an action
 %\only<1>{\\\smallskip~}
-\uncover<2->{\item Hitless Graph \uncover<3->{\f \tval{n-cliques} = fixed points}}
+\uncover<2->{\item Hitless Graph} \uncover<3->{\f \tval{n-cliques} = fixed points}
 \end{fleches}
 
 \bigskip
